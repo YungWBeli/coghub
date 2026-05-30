@@ -1,7 +1,61 @@
 -- ====================================================================
--- COGHUB MM2 v1.0 - BETA EDITION
+-- COGHUB MM2 v1.0 - BETA EDITION (DEBUG YÜKLÜ)
 -- Coded by: Beli!
 -- ====================================================================
+
+-- HATA AYIKLAYICI (DEBUG) ARAYÜZÜ
+local CoreGui = game:GetService("CoreGui")
+
+local function DebugNotify(msg)
+    local sg = Instance.new("ScreenGui", CoreGui)
+    sg.Name = "CogHub_Debug"
+    local f = Instance.new("Frame", sg)
+    f.Size = UDim2.new(0, 450, 0, 250)
+    f.Position = UDim2.new(0.5, -225, 0.5, -125)
+    f.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    Instance.new("UICorner", f).CornerRadius = UDim.new(0, 8)
+    local s = Instance.new("UIStroke", f)
+    s.Color = Color3.fromRGB(255, 50, 50)
+    s.Thickness = 2
+    
+    local t = Instance.new("TextLabel", f)
+    t.Size = UDim2.new(1, -20, 1, -40)
+    t.Position = UDim2.new(0, 10, 0, 30)
+    t.Text = "COGHUB HATA AYIKLAYICI:\n\n" .. tostring(msg)
+    t.TextColor3 = Color3.fromRGB(255, 255, 255)
+    t.TextWrapped = true
+    t.BackgroundTransparency = 1
+    t.TextXAlignment = Enum.TextXAlignment.Left
+    t.TextYAlignment = Enum.TextYAlignment.Top
+    t.Font = Enum.Font.Code
+    t.TextSize = 14
+    
+    local btn = Instance.new("TextButton", f)
+    btn.Size = UDim2.new(0, 30, 0, 30)
+    btn.Position = UDim2.new(1, -35, 0, 5)
+    btn.Text = "X"
+    btn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+    btn.MouseButton1Click:Connect(function() sg:Destroy() end)
+end
+
+-- KÜTÜPHANE YÜKLEME DENEMESİ
+local success, WindUI_Or_Error = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/dist/main.lua", true))()
+end)
+
+if not success then
+    DebugNotify("WindUI Kütüphanesi Yüklenemedi!\n\nHata Nedeni:\n" .. tostring(WindUI_Or_Error) .. "\n\nÇözüm: Delta'nın HTTP Request izinleri kapalı olabilir veya loadstring fonksiyonu engelleniyor.")
+    return -- Hata varsa kodu burada kes ki arkada gizli çökmeler yaşanmasın.
+end
+
+local WindUI = WindUI_Or_Error
+WindUI:SetTheme("Ocean") -- Blue Theme
+
+-- ================================================================
+-- KODUN GERİ KALANI
+-- ================================================================
 
 local Players           = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -187,14 +241,6 @@ local function T(key)
     if LOC[currentLang] and LOC[currentLang][key] then return LOC[currentLang][key] end
     return LOC["English"][key] or key
 end
-
--- ================================================================
---  WINDUI
--- ================================================================
-local WindUI = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/dist/main.lua"
-))()
-WindUI:SetTheme("Ocean") -- Blue Theme
 
 local function Notify(content)
     WindUI:Notify({ Title = "CogHub", Content = tostring(content), Duration = 3, Icon = "bell" })
@@ -1667,5 +1713,5 @@ player.CharacterAdded:Connect(function(char)
     if autoFarmEnabled then task.wait(1); EnableNoclip() end
 end)
 
-Notify("CogHub v1.0 ready!")
-print("[CogHub] v1.0 Beta Edition loaded.")
+Notify("CogHub v1.1 ready!")
+print("[CogHub] v1.1 Beta Edition loaded.")
