@@ -1,6 +1,6 @@
 -- ====================================================================
--- COGHUB MM2 v1.1 - BETA EDITION (DEBUG YÜKLÜ)
--- Coded by: Beli!
+-- COGHUB MM2 v1.0 - BETA EDITION (DEBUG YÜKLÜ)
+-- Coded by: Cog
 -- ====================================================================
 
 -- HATA AYIKLAYICI (DEBUG) ARAYÜZÜ
@@ -40,37 +40,18 @@ local function DebugNotify(msg)
     btn.MouseButton1Click:Connect(function() sg:Destroy() end)
 end
 
--- ====================================================================
--- COGHUB MM2 v1.0 - STABLE VERSION (NO THEME ERROR)
--- ====================================================================
+-- KÜTÜPHANE YÜKLEME DENEMESİ
+local success, WindUI_Or_Error = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/dist/main.lua", true))()
+end)
 
--- ====================================================================
--- GÜVENLİ YÜKLEME BLOĞU
--- ====================================================================
-local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/dist/main.lua"))()
+if not success then
+    DebugNotify("WindUI Kütüphanesi Yüklenemedi!\n\nHata Nedeni:\n" .. tostring(WindUI_Or_Error) .. "\n\nÇözüm: Delta'nın HTTP Request izinleri kapalı olabilir veya loadstring fonksiyonu engelleniyor.")
+    return -- Hata varsa kodu burada kes ki arkada gizli çökmeler yaşanmasın.
+end
 
--- Tema ayarını kaldırdık, varsayılan çalışacak.
-print("CogHub: Kutuphane basariyla yuklendi.")
--- ====================================================================
-
--- Temayı kaldırıp varsayılan bırakıyoruz
--- WindUI:SetTheme("Ocean") -- Hata yapmaması için burayı devre dışı bıraktım
-
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Workspace = game:GetService("Workspace")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local Lighting = game:GetService("Lighting")
-local TweenService = game:GetService("TweenService")
-local player = Players.LocalPlayer
-
--- [KODUN GERİ KALANI]
--- (Aşağıya orijinal 850 satırlık kodunun tamamını yapıştır)
-
--- ====================================================================
--- CogHub v1.0 - GUI READY
--- ====================================================================
+local WindUI = WindUI_Or_Error
+WindUI:SetTheme("Ocean") -- Blue Theme
 
 -- ================================================================
 -- KODUN GERİ KALANI
@@ -1732,5 +1713,5 @@ player.CharacterAdded:Connect(function(char)
     if autoFarmEnabled then task.wait(1); EnableNoclip() end
 end)
 
-Notify("CogHub v1.1 ready!")
-print("[CogHub] v1.1 Beta Edition loaded.")
+Notify("CogHub v1.0 ready!")
+print("[CogHub] v1.0 Beta Edition loaded.")
