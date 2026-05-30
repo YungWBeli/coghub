@@ -1,61 +1,7 @@
 -- ====================================================================
--- COGHUB MM2 v1.0 - BETA EDITION (DEBUG YÜKLÜ)
--- Coded by: Cog
+-- COGHUB MM2 v1.2 - RED EDITION
+-- Coded by: Beli!
 -- ====================================================================
-
--- HATA AYIKLAYICI (DEBUG) ARAYÜZÜ
-local CoreGui = game:GetService("CoreGui")
-
-local function DebugNotify(msg)
-    local sg = Instance.new("ScreenGui", CoreGui)
-    sg.Name = "CogHub_Debug"
-    local f = Instance.new("Frame", sg)
-    f.Size = UDim2.new(0, 450, 0, 250)
-    f.Position = UDim2.new(0.5, -225, 0.5, -125)
-    f.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Instance.new("UICorner", f).CornerRadius = UDim.new(0, 8)
-    local s = Instance.new("UIStroke", f)
-    s.Color = Color3.fromRGB(255, 50, 50)
-    s.Thickness = 2
-    
-    local t = Instance.new("TextLabel", f)
-    t.Size = UDim2.new(1, -20, 1, -40)
-    t.Position = UDim2.new(0, 10, 0, 30)
-    t.Text = "COGHUB HATA AYIKLAYICI:\n\n" .. tostring(msg)
-    t.TextColor3 = Color3.fromRGB(255, 255, 255)
-    t.TextWrapped = true
-    t.BackgroundTransparency = 1
-    t.TextXAlignment = Enum.TextXAlignment.Left
-    t.TextYAlignment = Enum.TextYAlignment.Top
-    t.Font = Enum.Font.Code
-    t.TextSize = 14
-    
-    local btn = Instance.new("TextButton", f)
-    btn.Size = UDim2.new(0, 30, 0, 30)
-    btn.Position = UDim2.new(1, -35, 0, 5)
-    btn.Text = "X"
-    btn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
-    btn.MouseButton1Click:Connect(function() sg:Destroy() end)
-end
-
--- KÜTÜPHANE YÜKLEME DENEMESİ
-local success, WindUI_Or_Error = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/dist/main.lua", true))()
-end)
-
-if not success then
-    DebugNotify("WindUI Kütüphanesi Yüklenemedi!\n\nHata Nedeni:\n" .. tostring(WindUI_Or_Error) .. "\n\nÇözüm: Delta'nın HTTP Request izinleri kapalı olabilir veya loadstring fonksiyonu engelleniyor.")
-    return -- Hata varsa kodu burada kes ki arkada gizli çökmeler yaşanmasın.
-end
-
-local WindUI = WindUI_Or_Error
-WindUI:SetTheme("Ocean") -- Blue Theme
-
--- ================================================================
--- KODUN GERİ KALANI
--- ================================================================
 
 local Players           = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -71,7 +17,7 @@ local Camera = Workspace.CurrentCamera
 -- ================================================================
 --  GLOBALS & THEME
 -- ================================================================
-local BLUE      = Color3.fromRGB(52, 152, 219) -- #3498db
+local BLUE      = Color3.fromRGB(52, 152, 219)
 local BLUE_DARK = Color3.fromRGB(30, 90, 130)
 
 local goldCD   = false
@@ -171,8 +117,11 @@ local ASMR_COLORS = {
 }
 local ASMR_ALPHA = {"Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","Z","X","C","V","B","N","M"}
 
+local DISCORD_INVITE = "https://discord.gg/RU5xWM483S"
+local LANG_OPTIONS = {"English", "Türkçe", "Deutch", "Français", "Español"}
+
 -- ================================================================
---  LOCALIZATION SYSTEM (DİL DESTEĞİ)
+--  LOCALIZATION SYSTEM
 -- ================================================================
 local currentLang = "English"
 local LOC = {
@@ -186,7 +135,44 @@ local LOC = {
         ["invis_on"] = "INVISIBLE\nON", ["invis_off"] = "INVISIBLE\nOFF", ["super_on"] = "SUPER\nJUMP ON", ["super"] = "SUPER\nJUMP",
         ["farm_on"] = "AUTO\nFARM ON", ["farm_off"] = "AUTO\nFARM OFF", ["anti_on"] = "ANTI\nFLING ON", ["anti_off"] = "ANTI\nFLING OFF",
         ["low_on"] = "LOW\nGRAPHICS ON", ["low"] = "LOW\nGRAPHICS",
-        ["discord"] = "Discord link copied to clipboard!", ["lang_changed"] = "Language changed!"
+        ["discord"] = "Discord invite copied to clipboard!", ["lang_changed"] = "Language changed!",
+        ["popup_title"] = "CogHub MM2", ["popup_content"] = "v1.2  |  Red Edition  |  by Beli!", ["ok"] = "OK",
+        ["window_author"] = "Beli!  |  MM2 v1.2", ["section_title"] = "CogHub v1.2  |  Red Edition", ["tab_main"] = "Main",
+        ["load_buttons_title"] = "Load Buttons", ["load_buttons_desc"] = "Enable floating buttons one by one. Disable to remove them from screen.",
+        ["gui_gold_jump"] = "Gold Jump", ["gui_bomb_jump"] = "Bomb Jump", ["gui_shoot_throw"] = "Shoot / Throw",
+        ["gui_esp"] = "ESP", ["gui_flick"] = "Flick", ["gui_speed_glitch"] = "Speed Glitch",
+        ["gui_speed_amount"] = "Speed Amount", ["gui_speed_amount_desc"] = "Set glitch speed (16-500)",
+        ["gui_stretch"] = "Stretch", ["gui_stretch_amount"] = "Stretch Amount", ["gui_stretch_amount_desc"] = "Set stretch amount (1-200)",
+        ["gui_grab_gun"] = "Grab Gun", ["gui_wall_hop"] = "Wall Hop", ["gui_fling_murderer"] = "Fling Murderer",
+        ["gui_fling_sheriff"] = "Fling Sheriff", ["gui_hold_everyone"] = "Hold Everyone", ["gui_invisible"] = "Invisible",
+        ["gui_super_jump"] = "Super Jump", ["gui_super_jump_power"] = "Super Jump Power", ["gui_super_jump_power_desc"] = "Set jump power (50-500)",
+        ["gui_auto_farm"] = "Auto Farm", ["gui_anti_fling"] = "Anti-Fling", ["gui_low_graphics"] = "Low Graphics",
+        ["esp_settings_title"] = "ESP Settings", ["esp_settings_desc"] = "Which roles should be shown?",
+        ["show_murderer"] = "Show Murderer", ["show_sheriff"] = "Show Sheriff", ["show_hero"] = "Show Hero",
+        ["show_innocents"] = "Show Innocents", ["show_self"] = "Show Self", ["dropped_gun_esp"] = "Dropped Gun ESP",
+        ["crosshair_title"] = "Crosshair", ["crosshair_desc"] = "Custom crosshair + color + gradient. ShiftLock must be enabled.",
+        ["custom_crosshair"] = "Custom Crosshair", ["crosshair_picker"] = "Crosshair Picker + Colors",
+        ["crosshair_picker_desc"] = "Preset cursor + Spin + Color + Gradient",
+        ["crosshair_size"] = "Crosshair Size", ["crosshair_size_desc"] = "16px - 96px",
+        ["crosshair_on"] = "Crosshair ON - Enable ShiftLock!", ["skybox_title"] = "Skybox", ["skybox_desc"] = "7 presets + custom ID.",
+        ["skybox_picker_btn"] = "Skybox Picker", ["asmr_title"] = "ASMR Keyboard Walk", ["asmr_desc"] = "Keyboard keys appear under your feet.",
+        ["asmr_toggle"] = "ASMR Keyboard Walk Mode", ["asmr_on"] = "ASMR Keyboard ON",
+        ["settings_support_title"] = "Settings & Support", ["settings_support_desc"] = "Change language or join our Discord community.",
+        ["language_label"] = "Language", ["discord_menu"] = "Discord", ["support_server"] = "Support Server",
+        ["creator_line"] = "Creator", ["creator_desc"] = "Made with love by Beli!",
+        ["ready_msg"] = "CogHub v14.0 ready!",
+        ["apply"] = "Apply", ["reset_default"] = "Reset Default", ["apply_color"] = "Apply Color", ["preview"] = "Preview",
+        ["skybox_picker"] = "Skybox Picker", ["restore_sky"] = "Restore Default Sky", ["skybox_id_ph"] = "Custom Skybox ID, press Enter...",
+        ["cursor_picker"] = "Cursor Picker", ["cursor_id_ph"] = "Custom Cursor ID, press Enter...",
+        ["spin_crosshair"] = "Spin Crosshair", ["gradient_mode"] = "Gradient Color Mode", ["color1"] = "Color 1", ["color2"] = "Color 2 (Gradient)",
+        ["rgb_ph"] = "R,G,B example: 52,152,219", ["applied_suffix"] = " applied!", ["value_arrow"] = " -> ",
+        ["gun_dropped"] = "Gun dropped on the map!", ["esp_remote_missing"] = "ESP remote not found!",
+        ["no_gun_msg"] = "No gun!", ["no_knife"] = "No knife!", ["no_target"] = "No target.", ["no_bomb"] = "No bomb!",
+        ["no_gun_map"] = "No gun on map!", ["gun_pos_missing"] = "Gun position not found!", ["tp_gun"] = "Teleporting to gun...",
+        ["is_sitting"] = " is sitting.", ["returned_pos"] = "Returned to position.", ["fling_progress"] = "Fling in progress.",
+        ["flinging_player"] = "Flinging: ", ["no_target_found"] = "No target found.", ["skybox_restored"] = "Skybox restored.",
+        ["custom_skybox"] = "Custom skybox: ", ["skybox_set"] = "Skybox: ", ["custom_cursor"] = "Custom cursor set!",
+        ["cursor_set"] = "Cursor: ", ["gun_on_map"] = "GUN ON MAP",
     },
     ["Türkçe"] = {
         ["wait"] = "BEKLE...", ["gold_jump"] = "ALTIN\nZIPLA", ["bomb_jump"] = "BOMBA\nZIPLA",
@@ -198,7 +184,44 @@ local LOC = {
         ["invis_on"] = "GÖRÜNMEZ\nAÇIK", ["invis_off"] = "GÖRÜNMEZ\nKAPALI", ["super_on"] = "SÜPER\nZIPLA AÇIK", ["super"] = "SÜPER\nZIPLA",
         ["farm_on"] = "OTO\nFARM AÇIK", ["farm_off"] = "OTO\nFARM KAPALI", ["anti_on"] = "ANTİ\nFIRLATMA AÇIK", ["anti_off"] = "ANTİ\nFIRLATMA KAPALI",
         ["low_on"] = "DÜŞÜK\nGRAFİK AÇIK", ["low"] = "DÜŞÜK\nGRAFİK",
-        ["discord"] = "Discord davet bağlantısı kopyalandı!", ["lang_changed"] = "Dil değiştirildi!"
+        ["discord"] = "Discord davet bağlantısı kopyalandı!", ["lang_changed"] = "Dil değiştirildi!",
+        ["popup_title"] = "CogHub MM2", ["popup_content"] = "v1.2  |  Red Edition  |  Yapımcı: Beli!", ["ok"] = "Tamam",
+        ["window_author"] = "Beli!  |  MM2 v1.2", ["section_title"] = "CogHub v1.2  |  Red Edition", ["tab_main"] = "Ana Menü",
+        ["load_buttons_title"] = "Butonları Yükle", ["load_buttons_desc"] = "İstediğin yüzen butonları tek tek aç. Kapatınca ekrandan kalkar.",
+        ["gui_gold_jump"] = "Altın Zıpla", ["gui_bomb_jump"] = "Bomba Zıpla", ["gui_shoot_throw"] = "Ateş Et / Fırlat",
+        ["gui_esp"] = "ESP", ["gui_flick"] = "Flick", ["gui_speed_glitch"] = "Hız Hilesi",
+        ["gui_speed_amount"] = "Hız Miktarı", ["gui_speed_amount_desc"] = "Glitch hızını ayarla (16-500)",
+        ["gui_stretch"] = "Uzatma", ["gui_stretch_amount"] = "Uzatma Miktarı", ["gui_stretch_amount_desc"] = "Uzatma miktarını ayarla (1-200)",
+        ["gui_grab_gun"] = "Silahı Al", ["gui_wall_hop"] = "Duvar Zıpla", ["gui_fling_murderer"] = "Katili Fırlat",
+        ["gui_fling_sheriff"] = "Şerifi Fırlat", ["gui_hold_everyone"] = "Herkesi Tut", ["gui_invisible"] = "Görünmezlik",
+        ["gui_super_jump"] = "Süper Zıpla", ["gui_super_jump_power"] = "Süper Zıpla Gücü", ["gui_super_jump_power_desc"] = "Zıplama gücünü ayarla (50-500)",
+        ["gui_auto_farm"] = "Oto Farm", ["gui_anti_fling"] = "Anti-Fling", ["gui_low_graphics"] = "Düşük Grafik",
+        ["esp_settings_title"] = "ESP Ayarları", ["esp_settings_desc"] = "Hangi roller gösterilsin?",
+        ["show_murderer"] = "Katili Göster", ["show_sheriff"] = "Şerifi Göster", ["show_hero"] = "Kahramanı Göster",
+        ["show_innocents"] = "Masumları Göster", ["show_self"] = "Kendini Göster", ["dropped_gun_esp"] = "Düşen Silah ESP",
+        ["crosshair_title"] = "Nişangah", ["crosshair_desc"] = "Özel nişangah + renk + gradient. ShiftLock açık olmalı.",
+        ["custom_crosshair"] = "Özel Nişangah", ["crosshair_picker"] = "Nişangah Seçici + Renkler",
+        ["crosshair_picker_desc"] = "Hazır imleç + Döndürme + Renk + Gradient",
+        ["crosshair_size"] = "Nişangah Boyutu", ["crosshair_size_desc"] = "16px - 96px",
+        ["crosshair_on"] = "Nişangah AÇIK - ShiftLock'u aç!", ["skybox_title"] = "Skybox", ["skybox_desc"] = "7 hazır + özel ID.",
+        ["skybox_picker_btn"] = "Skybox Seçici", ["asmr_title"] = "ASMR Klavye Yürüyüşü", ["asmr_desc"] = "Ayaklarının altında klavye tuşları belirir.",
+        ["asmr_toggle"] = "ASMR Klavye Modu", ["asmr_on"] = "ASMR Klavye AÇIK",
+        ["settings_support_title"] = "Ayarlar & Destek", ["settings_support_desc"] = "Dili değiştir veya Discord topluluğumuza katıl.",
+        ["language_label"] = "Dil", ["discord_menu"] = "Discord", ["support_server"] = "Destek Sunucusu",
+        ["creator_line"] = "Yapımcı", ["creator_desc"] = "Sevgilerle Beli! tarafından yapıldı.",
+        ["ready_msg"] = "CogHub v14.0 hazır!",
+        ["apply"] = "Uygula", ["reset_default"] = "Varsayılana Dön", ["apply_color"] = "Rengi Uygula", ["preview"] = "Önizleme",
+        ["skybox_picker"] = "Skybox Seçici", ["restore_sky"] = "Varsayılan Skybox", ["skybox_id_ph"] = "Özel Skybox ID, Enter'a bas...",
+        ["cursor_picker"] = "İmleç Seçici", ["cursor_id_ph"] = "Özel İmleç ID, Enter'a bas...",
+        ["spin_crosshair"] = "Nişangahı Döndür", ["gradient_mode"] = "Gradient Renk Modu", ["color1"] = "Renk 1", ["color2"] = "Renk 2 (Gradient)",
+        ["rgb_ph"] = "R,G,B örnek: 52,152,219", ["applied_suffix"] = " uygulandı!", ["value_arrow"] = " -> ",
+        ["gun_dropped"] = "Haritaya silah düştü!", ["esp_remote_missing"] = "ESP remote bulunamadı!",
+        ["no_gun_msg"] = "Silah yok!", ["no_knife"] = "Bıçak yok!", ["no_target"] = "Hedef yok.", ["no_bomb"] = "Bomba yok!",
+        ["no_gun_map"] = "Haritada silah yok!", ["gun_pos_missing"] = "Silah konumu bulunamadı!", ["tp_gun"] = "Silaha ışınlanılıyor...",
+        ["is_sitting"] = " oturuyor.", ["returned_pos"] = "Konuma dönüldü.", ["fling_progress"] = "Fırlatma devam ediyor.",
+        ["flinging_player"] = "Fırlatılıyor: ", ["no_target_found"] = "Hedef bulunamadı.", ["skybox_restored"] = "Skybox geri yüklendi.",
+        ["custom_skybox"] = "Özel skybox: ", ["skybox_set"] = "Skybox: ", ["custom_cursor"] = "Özel imleç ayarlandı!",
+        ["cursor_set"] = "İmleç: ", ["gun_on_map"] = "HARİTADA SİLAH",
     },
     ["Deutch"] = {
         ["wait"] = "WARTEN...", ["gold_jump"] = "GOLD\nSPRUNG", ["bomb_jump"] = "BOMBEN\nSPRUNG",
@@ -209,8 +232,45 @@ local LOC = {
         ["fling_s"] = "SHERIFF\nWERFEN", ["no_s"] = "KEIN\nSHERIFF", ["hold_on"] = "ALLE\nHALTEN AN", ["hold"] = "ALLE\nHALTEN",
         ["invis_on"] = "UNSICHTBAR\nAN", ["invis_off"] = "UNSICHTBAR\nAUS", ["super_on"] = "SUPER\nSPRUNG AN", ["super"] = "SUPER\nSPRUNG",
         ["farm_on"] = "AUTO\nFARM AN", ["farm_off"] = "AUTO\nFARM AUS", ["anti_on"] = "ANTI\nFLING AN", ["anti_off"] = "ANTI\nFLING AUS",
-        ["low_on"] = "LOW\nGRAPHICS AN", ["low"] = "LOW\nGRAPHICS",
-        ["discord"] = "Discord-Link in die Zwischenablage kopiert!", ["lang_changed"] = "Sprache geändert!"
+        ["low_on"] = "NIEDRIGE\nGRAFIK AN", ["low"] = "NIEDRIGE\nGRAFIK",
+        ["discord"] = "Discord-Einladung in die Zwischenablage kopiert!", ["lang_changed"] = "Sprache geändert!",
+        ["popup_title"] = "CogHub MM2", ["popup_content"] = "v14.0  |  Red Edition  |  von Beli!", ["ok"] = "OK",
+        ["window_author"] = "Beli!  |  MM2 v14", ["section_title"] = "CogHub v14.0  |  Red Edition", ["tab_main"] = "Hauptmenü",
+        ["load_buttons_title"] = "Buttons Laden", ["load_buttons_desc"] = "Schwebende Buttons einzeln aktivieren. Deaktivieren entfernt sie vom Bildschirm.",
+        ["gui_gold_jump"] = "Gold Sprung", ["gui_bomb_jump"] = "Bomben Sprung", ["gui_shoot_throw"] = "Schießen / Werfen",
+        ["gui_esp"] = "ESP", ["gui_flick"] = "Flick", ["gui_speed_glitch"] = "Tempo Glitch",
+        ["gui_speed_amount"] = "Tempo Menge", ["gui_speed_amount_desc"] = "Glitch-Geschwindigkeit (16-500)",
+        ["gui_stretch"] = "Strecken", ["gui_stretch_amount"] = "Streck Menge", ["gui_stretch_amount_desc"] = "Streckmenge (1-200)",
+        ["gui_grab_gun"] = "Waffe Nehmen", ["gui_wall_hop"] = "Wand Sprung", ["gui_fling_murderer"] = "Mörder Werfen",
+        ["gui_fling_sheriff"] = "Sheriff Werfen", ["gui_hold_everyone"] = "Alle Halten", ["gui_invisible"] = "Unsichtbar",
+        ["gui_super_jump"] = "Super Sprung", ["gui_super_jump_power"] = "Super Sprung Kraft", ["gui_super_jump_power_desc"] = "Sprungkraft (50-500)",
+        ["gui_auto_farm"] = "Auto Farm", ["gui_anti_fling"] = "Anti-Fling", ["gui_low_graphics"] = "Niedrige Grafik",
+        ["esp_settings_title"] = "ESP Einstellungen", ["esp_settings_desc"] = "Welche Rollen sollen angezeigt werden?",
+        ["show_murderer"] = "Mörder Zeigen", ["show_sheriff"] = "Sheriff Zeigen", ["show_hero"] = "Held Zeigen",
+        ["show_innocents"] = "Unschuldige Zeigen", ["show_self"] = "Sich Selbst Zeigen", ["dropped_gun_esp"] = "Fallende Waffe ESP",
+        ["crosshair_title"] = "Fadenkreuz", ["crosshair_desc"] = "Eigenes Fadenkreuz + Farbe + Verlauf. ShiftLock muss an sein.",
+        ["custom_crosshair"] = "Eigenes Fadenkreuz", ["crosshair_picker"] = "Fadenkreuz Auswahl + Farben",
+        ["crosshair_picker_desc"] = "Voreinstellung + Drehen + Farbe + Verlauf",
+        ["crosshair_size"] = "Fadenkreuz Größe", ["crosshair_size_desc"] = "16px - 96px",
+        ["crosshair_on"] = "Fadenkreuz AN - ShiftLock aktivieren!", ["skybox_title"] = "Skybox", ["skybox_desc"] = "7 Voreinstellungen + eigene ID.",
+        ["skybox_picker_btn"] = "Skybox Auswahl", ["asmr_title"] = "ASMR Tastatur Gehen", ["asmr_desc"] = "Tasten erscheinen unter deinen Füßen.",
+        ["asmr_toggle"] = "ASMR Tastatur Modus", ["asmr_on"] = "ASMR Tastatur AN",
+        ["settings_support_title"] = "Einstellungen & Support", ["settings_support_desc"] = "Sprache ändern oder Discord beitreten.",
+        ["language_label"] = "Sprache", ["discord_menu"] = "Discord", ["support_server"] = "Support Server",
+        ["creator_line"] = "Ersteller", ["creator_desc"] = "Mit Liebe gemacht von Beli!",
+        ["ready_msg"] = "CogHub v14.0 bereit!",
+        ["apply"] = "Anwenden", ["reset_default"] = "Standard", ["apply_color"] = "Farbe Anwenden", ["preview"] = "Vorschau",
+        ["skybox_picker"] = "Skybox Auswahl", ["restore_sky"] = "Standard Skybox", ["skybox_id_ph"] = "Eigene Skybox ID, Enter...",
+        ["cursor_picker"] = "Cursor Auswahl", ["cursor_id_ph"] = "Eigene Cursor ID, Enter...",
+        ["spin_crosshair"] = "Fadenkreuz Drehen", ["gradient_mode"] = "Farbverlauf Modus", ["color1"] = "Farbe 1", ["color2"] = "Farbe 2 (Verlauf)",
+        ["rgb_ph"] = "R,G,B Beispiel: 52,152,219", ["applied_suffix"] = " angewendet!", ["value_arrow"] = " -> ",
+        ["gun_dropped"] = "Waffe auf der Karte gefallen!", ["esp_remote_missing"] = "ESP Remote nicht gefunden!",
+        ["no_gun_msg"] = "Keine Waffe!", ["no_knife"] = "Kein Messer!", ["no_target"] = "Kein Ziel.", ["no_bomb"] = "Keine Bombe!",
+        ["no_gun_map"] = "Keine Waffe auf der Karte!", ["gun_pos_missing"] = "Waffenposition nicht gefunden!", ["tp_gun"] = "Zur Waffe teleportieren...",
+        ["is_sitting"] = " sitzt.", ["returned_pos"] = "Zur Position zurückgekehrt.", ["fling_progress"] = "Wurf läuft.",
+        ["flinging_player"] = "Werfe: ", ["no_target_found"] = "Kein Ziel gefunden.", ["skybox_restored"] = "Skybox wiederhergestellt.",
+        ["custom_skybox"] = "Eigene Skybox: ", ["skybox_set"] = "Skybox: ", ["custom_cursor"] = "Eigener Cursor gesetzt!",
+        ["cursor_set"] = "Cursor: ", ["gun_on_map"] = "WAFFE AUF KARTE",
     },
     ["Français"] = {
         ["wait"] = "ATTENDRE...", ["gold_jump"] = "SAUT\nD'OR", ["bomb_jump"] = "SAUT\nBOMBE",
@@ -222,7 +282,44 @@ local LOC = {
         ["invis_on"] = "INVISIBLE\nON", ["invis_off"] = "INVISIBLE\nOFF", ["super_on"] = "SUPER\nSAUT ON", ["super"] = "SUPER\nSAUT",
         ["farm_on"] = "FARM\nAUTO ON", ["farm_off"] = "FARM\nAUTO OFF", ["anti_on"] = "ANTI\nÉJECTION ON", ["anti_off"] = "ANTI\nÉJECTION OFF",
         ["low_on"] = "GRAPHISMES\nBAS ON", ["low"] = "GRAPHISMES\nBAS",
-        ["discord"] = "Lien Discord copié dans le presse-papiers!", ["lang_changed"] = "Langue changée!"
+        ["discord"] = "Invitation Discord copiée!", ["lang_changed"] = "Langue changée!",
+        ["popup_title"] = "CogHub MM2", ["popup_content"] = "v14.0  |  Red Edition  |  par Beli!", ["ok"] = "OK",
+        ["window_author"] = "Beli!  |  MM2 v14", ["section_title"] = "CogHub v14.0  |  Red Edition", ["tab_main"] = "Principal",
+        ["load_buttons_title"] = "Charger les Boutons", ["load_buttons_desc"] = "Activez les boutons flottants un par un. Désactiver les retire de l'écran.",
+        ["gui_gold_jump"] = "Saut d'Or", ["gui_bomb_jump"] = "Saut Bombe", ["gui_shoot_throw"] = "Tirer / Lancer",
+        ["gui_esp"] = "ESP", ["gui_flick"] = "Flick", ["gui_speed_glitch"] = "Glitch Vitesse",
+        ["gui_speed_amount"] = "Montant Vitesse", ["gui_speed_amount_desc"] = "Vitesse du glitch (16-500)",
+        ["gui_stretch"] = "Étirer", ["gui_stretch_amount"] = "Montant Étirement", ["gui_stretch_amount_desc"] = "Montant d'étirement (1-200)",
+        ["gui_grab_gun"] = "Prendre Arme", ["gui_wall_hop"] = "Saut Mural", ["gui_fling_murderer"] = "Éjecter Tueur",
+        ["gui_fling_sheriff"] = "Éjecter Shérif", ["gui_hold_everyone"] = "Geler Tous", ["gui_invisible"] = "Invisible",
+        ["gui_super_jump"] = "Super Saut", ["gui_super_jump_power"] = "Puissance Super Saut", ["gui_super_jump_power_desc"] = "Puissance de saut (50-500)",
+        ["gui_auto_farm"] = "Farm Auto", ["gui_anti_fling"] = "Anti-Éjection", ["gui_low_graphics"] = "Graphismes Bas",
+        ["esp_settings_title"] = "Paramètres ESP", ["esp_settings_desc"] = "Quels rôles afficher?",
+        ["show_murderer"] = "Afficher Tueur", ["show_sheriff"] = "Afficher Shérif", ["show_hero"] = "Afficher Héros",
+        ["show_innocents"] = "Afficher Innocents", ["show_self"] = "Afficher Soi", ["dropped_gun_esp"] = "ESP Arme Tombée",
+        ["crosshair_title"] = "Viseur", ["crosshair_desc"] = "Viseur personnalisé + couleur + dégradé. ShiftLock requis.",
+        ["custom_crosshair"] = "Viseur Personnalisé", ["crosshair_picker"] = "Sélecteur Viseur + Couleurs",
+        ["crosshair_picker_desc"] = "Curseur preset + Rotation + Couleur + Dégradé",
+        ["crosshair_size"] = "Taille Viseur", ["crosshair_size_desc"] = "16px - 96px",
+        ["crosshair_on"] = "Viseur ON - Activez ShiftLock!", ["skybox_title"] = "Skybox", ["skybox_desc"] = "7 presets + ID personnalisé.",
+        ["skybox_picker_btn"] = "Sélecteur Skybox", ["asmr_title"] = "Marche Clavier ASMR", ["asmr_desc"] = "Des touches apparaissent sous vos pieds.",
+        ["asmr_toggle"] = "Mode Clavier ASMR", ["asmr_on"] = "Clavier ASMR ON",
+        ["settings_support_title"] = "Paramètres & Support", ["settings_support_desc"] = "Changer la langue ou rejoindre Discord.",
+        ["language_label"] = "Langue", ["discord_menu"] = "Discord", ["support_server"] = "Serveur Support",
+        ["creator_line"] = "Créateur", ["creator_desc"] = "Fait avec amour par Beli!",
+        ["ready_msg"] = "CogHub v14.0 prêt!",
+        ["apply"] = "Appliquer", ["reset_default"] = "Par Défaut", ["apply_color"] = "Appliquer Couleur", ["preview"] = "Aperçu",
+        ["skybox_picker"] = "Sélecteur Skybox", ["restore_sky"] = "Skybox Par Défaut", ["skybox_id_ph"] = "ID Skybox personnalisé, Entrée...",
+        ["cursor_picker"] = "Sélecteur Curseur", ["cursor_id_ph"] = "ID Curseur personnalisé, Entrée...",
+        ["spin_crosshair"] = "Rotation Viseur", ["gradient_mode"] = "Mode Dégradé", ["color1"] = "Couleur 1", ["color2"] = "Couleur 2 (Dégradé)",
+        ["rgb_ph"] = "R,G,B exemple: 52,152,219", ["applied_suffix"] = " appliqué!", ["value_arrow"] = " -> ",
+        ["gun_dropped"] = "Arme tombée sur la carte!", ["esp_remote_missing"] = "Remote ESP introuvable!",
+        ["no_gun_msg"] = "Pas d'arme!", ["no_knife"] = "Pas de couteau!", ["no_target"] = "Pas de cible.", ["no_bomb"] = "Pas de bombe!",
+        ["no_gun_map"] = "Pas d'arme sur la carte!", ["gun_pos_missing"] = "Position de l'arme introuvable!", ["tp_gun"] = "Téléportation vers l'arme...",
+        ["is_sitting"] = " est assis.", ["returned_pos"] = "Retour à la position.", ["fling_progress"] = "Éjection en cours.",
+        ["flinging_player"] = "Éjection: ", ["no_target_found"] = "Aucune cible trouvée.", ["skybox_restored"] = "Skybox restaurée.",
+        ["custom_skybox"] = "Skybox personnalisée: ", ["skybox_set"] = "Skybox: ", ["custom_cursor"] = "Curseur personnalisé défini!",
+        ["cursor_set"] = "Curseur: ", ["gun_on_map"] = "ARME SUR CARTE",
     },
     ["Español"] = {
         ["wait"] = "ESPERAR...", ["gold_jump"] = "SALTO\nDORADO", ["bomb_jump"] = "SALTO\nBOMBA",
@@ -234,21 +331,121 @@ local LOC = {
         ["invis_on"] = "INVISIBLE\nON", ["invis_off"] = "INVISIBLE\nOFF", ["super_on"] = "SÚPER\nSALTO ON", ["super"] = "SÚPER\nSALTO",
         ["farm_on"] = "FARM\nAUTO ON", ["farm_off"] = "FARM\nAUTO OFF", ["anti_on"] = "ANTI\nLANZAR ON", ["anti_off"] = "ANTI\nLANZAR OFF",
         ["low_on"] = "GRÁFICOS\nBAJOS ON", ["low"] = "GRÁFICOS\nBAJOS",
-        ["discord"] = "¡Enlace de Discord copiado al portapapeles!", ["lang_changed"] = "¡Idioma cambiado!"
-    }
+        ["discord"] = "¡Invitación de Discord copiada!", ["lang_changed"] = "¡Idioma cambiado!",
+        ["popup_title"] = "CogHub MM2", ["popup_content"] = "v14.0  |  Red Edition  |  por Beli!", ["ok"] = "OK",
+        ["window_author"] = "Beli!  |  MM2 v14", ["section_title"] = "CogHub v14.0  |  Red Edition", ["tab_main"] = "Principal",
+        ["load_buttons_title"] = "Cargar Botones", ["load_buttons_desc"] = "Activa botones flotantes uno por uno. Desactivar los quita de pantalla.",
+        ["gui_gold_jump"] = "Salto Dorado", ["gui_bomb_jump"] = "Salto Bomba", ["gui_shoot_throw"] = "Disparar / Lanzar",
+        ["gui_esp"] = "ESP", ["gui_flick"] = "Flick", ["gui_speed_glitch"] = "Glitch Velocidad",
+        ["gui_speed_amount"] = "Cantidad Velocidad", ["gui_speed_amount_desc"] = "Velocidad del glitch (16-500)",
+        ["gui_stretch"] = "Estirar", ["gui_stretch_amount"] = "Cantidad Estirar", ["gui_stretch_amount_desc"] = "Cantidad de estiramiento (1-200)",
+        ["gui_grab_gun"] = "Tomar Arma", ["gui_wall_hop"] = "Salto Muro", ["gui_fling_murderer"] = "Lanzar Asesino",
+        ["gui_fling_sheriff"] = "Lanzar Sheriff", ["gui_hold_everyone"] = "Congelar Todos", ["gui_invisible"] = "Invisible",
+        ["gui_super_jump"] = "Súper Salto", ["gui_super_jump_power"] = "Poder Súper Salto", ["gui_super_jump_power_desc"] = "Poder de salto (50-500)",
+        ["gui_auto_farm"] = "Farm Auto", ["gui_anti_fling"] = "Anti-Lanzar", ["gui_low_graphics"] = "Gráficos Bajos",
+        ["esp_settings_title"] = "Ajustes ESP", ["esp_settings_desc"] = "¿Qué roles mostrar?",
+        ["show_murderer"] = "Mostrar Asesino", ["show_sheriff"] = "Mostrar Sheriff", ["show_hero"] = "Mostrar Héroe",
+        ["show_innocents"] = "Mostrar Inocentes", ["show_self"] = "Mostrarse a Sí", ["dropped_gun_esp"] = "ESP Arma Caída",
+        ["crosshair_title"] = "Mira", ["crosshair_desc"] = "Mira personalizada + color + gradiente. ShiftLock debe estar activo.",
+        ["custom_crosshair"] = "Mira Personalizada", ["crosshair_picker"] = "Selector Mira + Colores",
+        ["crosshair_picker_desc"] = "Cursor preset + Giro + Color + Gradiente",
+        ["crosshair_size"] = "Tamaño Mira", ["crosshair_size_desc"] = "16px - 96px",
+        ["crosshair_on"] = "Mira ON - ¡Activa ShiftLock!", ["skybox_title"] = "Skybox", ["skybox_desc"] = "7 presets + ID personalizado.",
+        ["skybox_picker_btn"] = "Selector Skybox", ["asmr_title"] = "Caminata Teclado ASMR", ["asmr_desc"] = "Teclas aparecen bajo tus pies.",
+        ["asmr_toggle"] = "Modo Teclado ASMR", ["asmr_on"] = "Teclado ASMR ON",
+        ["settings_support_title"] = "Ajustes y Soporte", ["settings_support_desc"] = "Cambia idioma o únete a Discord.",
+        ["language_label"] = "Idioma", ["discord_menu"] = "Discord", ["support_server"] = "Servidor de Soporte",
+        ["creator_line"] = "Creador", ["creator_desc"] = "Hecho con amor por Beli!",
+        ["ready_msg"] = "¡CogHub v14.0 listo!",
+        ["apply"] = "Aplicar", ["reset_default"] = "Restablecer", ["apply_color"] = "Aplicar Color", ["preview"] = "Vista Previa",
+        ["skybox_picker"] = "Selector Skybox", ["restore_sky"] = "Skybox Predeterminado", ["skybox_id_ph"] = "ID Skybox personalizado, Enter...",
+        ["cursor_picker"] = "Selector Cursor", ["cursor_id_ph"] = "ID Cursor personalizado, Enter...",
+        ["spin_crosshair"] = "Girar Mira", ["gradient_mode"] = "Modo Gradiente", ["color1"] = "Color 1", ["color2"] = "Color 2 (Gradiente)",
+        ["rgb_ph"] = "R,G,B ejemplo: 52,152,219", ["applied_suffix"] = " aplicado!", ["value_arrow"] = " -> ",
+        ["gun_dropped"] = "¡Arma caída en el mapa!", ["esp_remote_missing"] = "¡Remote ESP no encontrado!",
+        ["no_gun_msg"] = "¡Sin arma!", ["no_knife"] = "¡Sin cuchillo!", ["no_target"] = "Sin objetivo.", ["no_bomb"] = "¡Sin bomba!",
+        ["no_gun_map"] = "¡Sin arma en el mapa!", ["gun_pos_missing"] = "¡Posición del arma no encontrada!", ["tp_gun"] = "Teletransportando al arma...",
+        ["is_sitting"] = " está sentado.", ["returned_pos"] = "Regresado a la posición.", ["fling_progress"] = "Lanzamiento en progreso.",
+        ["flinging_player"] = "Lanzando: ", ["no_target_found"] = "Objetivo no encontrado.", ["skybox_restored"] = "Skybox restaurado.",
+        ["custom_skybox"] = "Skybox personalizado: ", ["skybox_set"] = "Skybox: ", ["custom_cursor"] = "¡Cursor personalizado establecido!",
+        ["cursor_set"] = "Cursor: ", ["gun_on_map"] = "ARMA EN MAPA",
+    },
 }
 local function T(key)
     if LOC[currentLang] and LOC[currentLang][key] then return LOC[currentLang][key] end
     return LOC["English"][key] or key
 end
 
+-- ================================================================
+--  WINDUI
+-- ================================================================
+local WindUI = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/dist/main.lua"
+))()
+pcall(function() WindUI:SetTheme("Ocean") end)
+
 local function Notify(content)
     WindUI:Notify({ Title = "CogHub", Content = tostring(content), Duration = 3, Icon = "bell" })
 end
 
--- ================================================================
---  HELPERS
--- ================================================================
+local guiRefs = {}
+local Window, NavSec, Tab
+
+local function OpenDiscord()
+    pcall(function()
+        if setclipboard then setclipboard(DISCORD_INVITE) end
+    end)
+    pcall(function()
+        if typeof(openurl) == "function" then openurl(DISCORD_INVITE) end
+    end)
+    pcall(function()
+        if syn and typeof(syn.open_url) == "function" then syn.open_url(DISCORD_INVITE) end
+    end)
+    Notify(T("discord"))
+end
+
+local function SetEl(el, titleKey, descKey)
+    if not el then return end
+    pcall(function()
+        if titleKey and el.SetTitle then el:SetTitle(T(titleKey)) end
+        if descKey and el.SetDesc then el:SetDesc(T(descKey)) end
+    end)
+end
+
+local function RefreshGUILanguage()
+    pcall(function()
+        if Window and Window.SetTitle then Window:SetTitle("CogHub") end
+        if Window and Window.SetAuthor then Window:SetAuthor(T("window_author")) end
+    end)
+    SetEl(NavSec, "section_title")
+    SetEl(Tab, "tab_main")
+    for key, el in pairs(guiRefs) do
+        if type(el) == "table" and el.titleKey then
+            SetEl(el.ref, el.titleKey, el.descKey)
+        end
+    end
+    pcall(function()
+        if guiRefs.langDropdown and guiRefs.langDropdown.SetTitle then
+            guiRefs.langDropdown:SetTitle(T("language_label"))
+        end
+        if guiRefs.discordDropdown and guiRefs.discordDropdown.SetTitle then
+            guiRefs.discordDropdown:SetTitle(T("discord_menu"))
+        end
+    end)
+end
+
+local function ChangeLanguage(lang)
+    if not LOC[lang] then return end
+    currentLang = lang
+    RefreshGUILanguage()
+    Notify(T("lang_changed"))
+end
+
+local function Track(ref, titleKey, descKey)
+    guiRefs[titleKey] = { ref = ref, titleKey = titleKey, descKey = descKey }
+    return ref
+end
+
 local function MakeDraggable(handle, frame)
     local pd, ps, pp
     handle.InputBegan:Connect(function(i)
@@ -312,9 +509,9 @@ local function OpenSliderPopup(title, minVal, maxVal, defaultVal, step, onApply,
     UserInputService.InputChanged:Connect(function(i) if not dragging then return end; if i.UserInputType==Enum.UserInputType.MouseMovement or i.UserInputType==Enum.UserInputType.Touch then updateFromX(i.Position.X) end end)
     UserInputService.InputEnded:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then dragging=false end end)
     local btnRow = Instance.new("Frame", frame); btnRow.Size=UDim2.new(1,-20,0,36); btnRow.Position=UDim2.new(0,10,0,136); btnRow.BackgroundTransparency=1
-    local applyBtn = Instance.new("TextButton", btnRow); applyBtn.Size=UDim2.new(0.48,0,1,0); applyBtn.BackgroundColor3=Color3.fromRGB(20,160,20); applyBtn.Text="Apply"; applyBtn.TextColor3=Color3.new(1,1,1); applyBtn.Font=Enum.Font.GothamBold; applyBtn.TextSize=13; Instance.new("UICorner",applyBtn).CornerRadius=UDim.new(0,6)
-    applyBtn.MouseButton1Click:Connect(function() onApply(currentVal); Notify(title.." -> "..currentVal) end)
-    local resetBtn = Instance.new("TextButton", btnRow); resetBtn.Size=UDim2.new(0.48,0,1,0); resetBtn.Position=UDim2.new(0.52,0,0,0); resetBtn.BackgroundColor3=BLUE_DARK; resetBtn.Text="Reset Default"; resetBtn.TextColor3=Color3.new(1,1,1); resetBtn.Font=Enum.Font.GothamBold; resetBtn.TextSize=13; Instance.new("UICorner",resetBtn).CornerRadius=UDim.new(0,6)
+    local applyBtn = Instance.new("TextButton", btnRow); applyBtn.Size=UDim2.new(0.48,0,1,0); applyBtn.BackgroundColor3=Color3.fromRGB(20,160,20); applyBtn.Text=T("apply"); applyBtn.TextColor3=Color3.new(1,1,1); applyBtn.Font=Enum.Font.GothamBold; applyBtn.TextSize=13; Instance.new("UICorner",applyBtn).CornerRadius=UDim.new(0,6)
+    applyBtn.MouseButton1Click:Connect(function() onApply(currentVal); Notify(title..T("value_arrow")..currentVal) end)
+    local resetBtn = Instance.new("TextButton", btnRow); resetBtn.Size=UDim2.new(0.48,0,1,0); resetBtn.Position=UDim2.new(0.52,0,0,0); resetBtn.BackgroundColor3=BLUE_DARK; resetBtn.Text=T("reset_default"); resetBtn.TextColor3=Color3.new(1,1,1); resetBtn.Font=Enum.Font.GothamBold; resetBtn.TextSize=13; Instance.new("UICorner",resetBtn).CornerRadius=UDim.new(0,6)
     resetBtn.MouseButton1Click:Connect(function() onReset(); sg:Destroy() end)
     MakeDraggable(frame, frame)
 end
@@ -349,10 +546,10 @@ local function ApplyGunESP(gunDrop)
         local bb = Instance.new("BillboardGui"); bb.Adornee=handle; bb.Size=UDim2.new(0,130,0,36); bb.StudsOffset=Vector3.new(0,4,0); bb.AlwaysOnTop=true; bb.MaxDistance=300; bb.Parent=handle
         local bg = Instance.new("Frame", bb); bg.Size=UDim2.new(1,0,1,0); bg.BackgroundColor3=Color3.fromRGB(0,0,0); bg.BackgroundTransparency=0.4; bg.BorderSizePixel=0; Instance.new("UICorner",bg).CornerRadius=UDim.new(0,6)
         local bgS = Instance.new("UIStroke", bg); bgS.Color=BLUE; bgS.Thickness=1.5
-        local lbl = Instance.new("TextLabel", bg); lbl.Size=UDim2.new(1,0,1,0); lbl.BackgroundTransparency=1; lbl.Text="GUN ON MAP"; lbl.TextColor3=BLUE; lbl.Font=Enum.Font.GothamBlack; lbl.TextSize=13; lbl.TextStrokeTransparency=0.4; activeBB=bb
+        local lbl = Instance.new("TextLabel", bg); lbl.Size=UDim2.new(1,0,1,0); lbl.BackgroundTransparency=1; lbl.Text=T("gun_on_map"); lbl.TextColor3=BLUE; lbl.Font=Enum.Font.GothamBlack; lbl.TextSize=13; lbl.TextStrokeTransparency=0.4; activeBB=bb
     end
 end
-local function OnGunFound(gd) ApplyGunESP(gd); Notify("Gun dropped on the map!") end
+local function OnGunFound(gd) ApplyGunESP(gd); Notify(T("gun_dropped")) end
 local function OnGunRemoved() ClearGunESP(); ClearGunMarker() end
 local watchedFolders = {}
 local function WatchFolder(folder)
@@ -402,7 +599,7 @@ local function RemoveHL(char) local hl=char:FindFirstChild("CogHub_ESP"); if hl 
 local function ClearAllESP() for _,p in ipairs(Players:GetPlayers()) do if p.Character then RemoveHL(p.Character) end end; rolesData={}; lastEspTick=0 end
 local function StartESP()
     local remote = ReplicatedStorage:FindFirstChild("GetCurrentPlayerData", true)
-    if not remote or not remote:IsA("RemoteFunction") then Notify("ESP remote not found!"); espEnabled=false; return end
+    if not remote or not remote:IsA("RemoteFunction") then Notify(T("esp_remote_missing")); espEnabled=false; return end
     if espConn then espConn:Disconnect(); espConn=nil end
     espConn = RunService.Heartbeat:Connect(function()
         if not espEnabled then return end
@@ -512,8 +709,8 @@ end)
 local function AutoKill()
     local char=player.Character; if not char then return end
     local myHRP=char:FindFirstChild("HumanoidRootPart"); if not myHRP then return end
-    local gun=player.Backpack:FindFirstChild("Gun") or char:FindFirstChild("Gun"); if not gun then Notify("No gun!"); return end
-    if not currentTarget then Notify("No target."); return end
+    local gun=player.Backpack:FindFirstChild("Gun") or char:FindFirstChild("Gun"); if not gun then Notify(T("no_gun_msg")); return end
+    if not currentTarget then Notify(T("no_target")); return end
     if gun.Parent~=char then char.Humanoid:EquipTool(gun); task.wait(0) end
     local tPos=predPart.CFrame.Position
     pcall(function() gun:WaitForChild("Shoot"):FireServer(CFrame.new(myHRP.Position+Vector3.new(0,1,0),tPos),CFrame.new(tPos)) end)
@@ -521,7 +718,7 @@ end
 local function ThrowKnife()
     local char=player.Character; if not char then return end
     local myHRP=char:FindFirstChild("HumanoidRootPart"); if not myHRP then return end
-    local knife=player.Backpack:FindFirstChild("Knife") or char:FindFirstChild("Knife"); if not knife then Notify("No knife!"); return end
+    local knife=player.Backpack:FindFirstChild("Knife") or char:FindFirstChild("Knife"); if not knife then Notify(T("no_knife")); return end
     if knife.Parent~=char then char.Humanoid:EquipTool(knife); task.wait(0) end
     local tgtChar=currentTarget
     if not tgtChar then
@@ -533,7 +730,7 @@ local function ThrowKnife()
             end
         end
     end
-    if not tgtChar then Notify("No target!"); return end
+    if not tgtChar then Notify(T("no_target")); return end
     local tHRP=tgtChar:FindFirstChild("HumanoidRootPart"); if not tHRP then return end
     local torso=tgtChar:FindFirstChild("UpperTorso") or tgtChar:FindFirstChild("Torso") or tHRP
     local vel=tHRP.AssemblyLinearVelocity; local dist=(torso.Position-myHRP.Position).Magnitude; local extra=0
@@ -619,7 +816,7 @@ end)
 local function ExecuteJump(bombName, isGold)
     local char=player.Character; if not char then return end
     local bomb=player.Backpack:FindFirstChild(bombName) or char:FindFirstChild(bombName)
-    if not bomb then Notify("No "..bombName.."!"); return end
+    if not bomb then Notify(T("no_bomb")); return end
     local hrp=char:FindFirstChild("HumanoidRootPart"); if not hrp then return end
     if bomb.Parent~=char then char.Humanoid:EquipTool(bomb); task.wait() end
     pcall(function() bomb.Remote:FireServer(CFrame.new(hrp.Position+hrp.CFrame.LookVector*1.5+Vector3.new(0,-3,0)),50) end)
@@ -663,15 +860,15 @@ end
 --  GRAB GUN
 -- ================================================================
 local function DoGrabGun()
-    local gd=FindGunDrop(); if not gd then Notify("No gun on map!"); return end
+    local gd=FindGunDrop(); if not gd then Notify(T("no_gun_map")); return end
     local char=player.Character; local hrp=char and char:FindFirstChild("HumanoidRootPart"); if not hrp then return end
     local targetPos
     if gd:IsA("BasePart") then targetPos=gd.Position
     else local part=gd:FindFirstChild("Handle") or gd:FindFirstChildWhichIsA("BasePart") or gd.PrimaryPart; targetPos=part and part.Position or gd:GetModelCFrame().Position end
-    if not targetPos then Notify("Gun position not found!"); return end
+    if not targetPos then Notify(T("gun_pos_missing")); return end
     local goal = { CFrame = CFrame.new(targetPos + Vector3.new(0, 2, 0)) }
     local tween = TweenService:Create(hrp, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), goal)
-    tween:Play(); Notify("Teleporting to gun...")
+    tween:Play(); Notify(T("tp_gun"))
 end
 
 -- ================================================================
@@ -736,7 +933,7 @@ local function SkidFling(targetPlayer)
     local tHum=tChar:FindFirstChildOfClass("Humanoid"); local tHRP=tHum and tHum.RootPart
     local tHead=tChar:FindFirstChild("Head"); local acc=tChar:FindFirstChildOfClass("Accessory"); local aHandle=acc and acc:FindFirstChild("Handle")
     if myHRP.Velocity.Magnitude<50 then getgenv().CogOldPos=myHRP.CFrame end
-    if tHum and tHum.Sit then Notify(targetPlayer.Name.." is sitting."); return end
+    if tHum and tHum.Sit then Notify(targetPlayer.Name..T("is_sitting")); return end
     local camSubj=tHead or aHandle or tHum; if camSubj then Workspace.CurrentCamera.CameraSubject=camSubj end
     local function FPos(base,offset,ang)
         myHRP.CFrame=CFrame.new(base.Position)*offset*ang
@@ -774,18 +971,18 @@ local function SkidFling(targetPlayer)
             for _,p in ipairs(char:GetChildren()) do if p:IsA("BasePart") then p.Velocity=Vector3.new(); p.RotVelocity=Vector3.new() end end
             task.wait()
         until attempts>30 or (myHRP.Position-getgenv().CogOldPos.p).Magnitude<25
-        Workspace.FallenPartsDestroyHeight=getgenv().CogFPDH; Notify("Returned to position.")
+        Workspace.FallenPartsDestroyHeight=getgenv().CogFPDH; Notify(T("returned_pos"))
     end
     flingBusy=false
 end
 local function FlingMurderer()
-    if flingBusy then Notify("Fling in progress."); return end
+    if flingBusy then Notify(T("fling_progress")); return end
     -- Sadece bıçak taşıyan ilk oyuncuyu fling et, silah bekleme
     for _,p in ipairs(Players:GetPlayers()) do
         if p~=player and p.Character then
             local c=p.Character; local hum=c:FindFirstChildOfClass("Humanoid")
             if hum and hum.Health>0 and HasKnife(p) then
-                Notify("Flinging: "..p.Name); task.spawn(SkidFling,p); return
+                Notify(T("flinging_player")..p.Name); task.spawn(SkidFling,p); return
             end
         end
     end
@@ -794,20 +991,20 @@ local function FlingMurderer()
         if p~=player and p.Character then
             local c=p.Character; local hum=c:FindFirstChildOfClass("Humanoid")
             if hum and hum.Health>0 then
-                Notify("Flinging: "..p.Name); task.spawn(SkidFling,p); return
+                Notify(T("flinging_player")..p.Name); task.spawn(SkidFling,p); return
             end
         end
     end
-    Notify("No target found.")
+    Notify(T("no_target_found"))
 end
 local function FlingSheriff()
-    if flingBusy then Notify("Fling in progress."); return end
+    if flingBusy then Notify(T("fling_progress")); return end
     -- Sadece silah taşıyan ilk oyuncuyu fling et, bekleme yok
     for _,p in ipairs(Players:GetPlayers()) do
         if p~=player and p.Character then
             local c=p.Character; local hum=c:FindFirstChildOfClass("Humanoid")
             if hum and hum.Health>0 and HasGun(p) then
-                Notify("Flinging: "..p.Name); task.spawn(SkidFling,p); return
+                Notify(T("flinging_player")..p.Name); task.spawn(SkidFling,p); return
             end
         end
     end
@@ -824,7 +1021,7 @@ local function FlingSheriff()
         end
     end
     if best then Notify("Flinging: "..best.Name); task.spawn(SkidFling,best)
-    else Notify("No target found.") end
+    else Notify(T("no_target_found")) end
 end
 
 -- ================================================================
@@ -878,7 +1075,7 @@ local SKYBOX_PRESETS={
 }
 local function SaveDefaultSky() local s=Lighting:FindFirstChildOfClass("Sky"); if s then defaultSkyData={SkyboxBk=s.SkyboxBk,SkyboxDn=s.SkyboxDn,SkyboxFt=s.SkyboxFt,SkyboxLf=s.SkyboxLf,SkyboxRt=s.SkyboxRt,SkyboxUp=s.SkyboxUp} end end
 SaveDefaultSky()
-local function RestoreDefaultSky() for _,obj in pairs(Lighting:GetChildren()) do if obj:IsA("Sky") or obj:IsA("Atmosphere") or obj:IsA("Clouds") then obj:Destroy() end end; if defaultSkyData then local s=Instance.new("Sky",Lighting); for k,v in pairs(defaultSkyData) do s[k]=v end end; Notify("Skybox restored.") end
+local function RestoreDefaultSky() for _,obj in pairs(Lighting:GetChildren()) do if obj:IsA("Sky") or obj:IsA("Atmosphere") or obj:IsA("Clouds") then obj:Destroy() end end; if defaultSkyData then local s=Instance.new("Sky",Lighting); for k,v in pairs(defaultSkyData) do s[k]=v end end; Notify(T("skybox_restored")) end
 local function ApplySkyboxById(id)
     for _,obj in pairs(Lighting:GetChildren()) do if obj:IsA("Sky") or obj:IsA("Atmosphere") or obj:IsA("Clouds") then obj:Destroy() end end
     local sky=Instance.new("Sky",Lighting); sky.Name="CogHub_CustomSky"
@@ -894,12 +1091,12 @@ local function OpenSkyboxPicker()
     local fs=Instance.new("UIStroke",frame); fs.Color=BLUE; fs.Thickness=2
     local fsg=Instance.new("UIGradient",fs); fsg.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,BLUE),ColorSequenceKeypoint.new(0.5,BLUE_DARK),ColorSequenceKeypoint.new(1,BLUE)})
     task.spawn(function() local r=0; while frame and frame.Parent do r=(r+2)%360; fsg.Rotation=r; RunService.RenderStepped:Wait() end end)
-    local hdr=Instance.new("TextLabel",frame); hdr.Size=UDim2.new(1,-44,0,38); hdr.Position=UDim2.new(0,12,0,0); hdr.BackgroundTransparency=1; hdr.Text="CogHub  |  Skybox Picker"; hdr.TextColor3=Color3.fromRGB(255,255,255); hdr.Font=Enum.Font.GothamBold; hdr.TextSize=14; hdr.TextXAlignment=Enum.TextXAlignment.Left
+    local hdr=Instance.new("TextLabel",frame); hdr.Size=UDim2.new(1,-44,0,38); hdr.Position=UDim2.new(0,12,0,0); hdr.BackgroundTransparency=1; hdr.Text="CogHub  |  "..T("skybox_picker"); hdr.TextColor3=Color3.fromRGB(255,255,255); hdr.Font=Enum.Font.GothamBold; hdr.TextSize=14; hdr.TextXAlignment=Enum.TextXAlignment.Left
     local xBtn=Instance.new("TextButton",frame); xBtn.Size=UDim2.new(0,28,0,28); xBtn.Position=UDim2.new(1,-34,0,5); xBtn.BackgroundColor3=BLUE_DARK; xBtn.Text="X"; xBtn.TextColor3=Color3.new(1,1,1); xBtn.Font=Enum.Font.GothamBold; xBtn.TextSize=13; Instance.new("UICorner",xBtn).CornerRadius=UDim.new(0,6)
     xBtn.MouseButton1Click:Connect(function() sg:Destroy() end)
-    local idBox=Instance.new("TextBox",frame); idBox.Size=UDim2.new(1,-20,0,30); idBox.Position=UDim2.new(0,10,0,44); idBox.BackgroundColor3=Color3.fromRGB(22,22,22); idBox.Text=""; idBox.PlaceholderText="Custom Skybox ID, press Enter..."; idBox.TextColor3=Color3.new(1,1,1); idBox.PlaceholderColor3=Color3.fromRGB(120,120,120); idBox.Font=Enum.Font.Gotham; idBox.TextSize=13; idBox.ClearTextOnFocus=false; Instance.new("UICorner",idBox).CornerRadius=UDim.new(0,6); Instance.new("UIStroke",idBox).Color=Color3.fromRGB(80,80,80)
-    idBox.FocusLost:Connect(function(enter) if enter and idBox.Text~="" then ApplySkyboxById(idBox.Text); Notify("Custom skybox: "..idBox.Text); idBox.Text="" end end)
-    local restoreBtn=Instance.new("TextButton",frame); restoreBtn.Size=UDim2.new(1,-20,0,26); restoreBtn.Position=UDim2.new(0,10,0,80); restoreBtn.BackgroundColor3=Color3.fromRGB(35,35,35); restoreBtn.Text="Restore Default Sky"; restoreBtn.TextColor3=Color3.fromRGB(200,200,200); restoreBtn.Font=Enum.Font.GothamBold; restoreBtn.TextSize=12; Instance.new("UICorner",restoreBtn).CornerRadius=UDim.new(0,6)
+    local idBox=Instance.new("TextBox",frame); idBox.Size=UDim2.new(1,-20,0,30); idBox.Position=UDim2.new(0,10,0,44); idBox.BackgroundColor3=Color3.fromRGB(22,22,22); idBox.Text=""; idBox.PlaceholderText=T("skybox_id_ph"); idBox.TextColor3=Color3.new(1,1,1); idBox.PlaceholderColor3=Color3.fromRGB(120,120,120); idBox.Font=Enum.Font.Gotham; idBox.TextSize=13; idBox.ClearTextOnFocus=false; Instance.new("UICorner",idBox).CornerRadius=UDim.new(0,6); Instance.new("UIStroke",idBox).Color=Color3.fromRGB(80,80,80)
+    idBox.FocusLost:Connect(function(enter) if enter and idBox.Text~="" then ApplySkyboxById(idBox.Text); Notify(T("custom_skybox")..idBox.Text); idBox.Text="" end end)
+    local restoreBtn=Instance.new("TextButton",frame); restoreBtn.Size=UDim2.new(1,-20,0,26); restoreBtn.Position=UDim2.new(0,10,0,80); restoreBtn.BackgroundColor3=Color3.fromRGB(35,35,35); restoreBtn.Text=T("restore_sky"); restoreBtn.TextColor3=Color3.fromRGB(200,200,200); restoreBtn.Font=Enum.Font.GothamBold; restoreBtn.TextSize=12; Instance.new("UICorner",restoreBtn).CornerRadius=UDim.new(0,6)
     restoreBtn.MouseButton1Click:Connect(function() RestoreDefaultSky(); sg:Destroy() end)
     local scroll=Instance.new("ScrollingFrame",frame); scroll.Size=UDim2.new(1,-14,1,-114); scroll.Position=UDim2.new(0,7,0,112); scroll.BackgroundTransparency=1; scroll.BorderSizePixel=0; scroll.ScrollBarThickness=4; scroll.CanvasSize=UDim2.new(0,0,0,#SKYBOX_PRESETS*56)
     Instance.new("UIListLayout",scroll).Padding=UDim.new(0,6)
@@ -910,7 +1107,7 @@ local function OpenSkyboxPicker()
         local colorBox=Instance.new("Frame",row); colorBox.Size=UDim2.new(0,34,0,34); colorBox.Position=UDim2.new(0,8,0.5,-17); colorBox.BackgroundColor3=preset.color; colorBox.BorderSizePixel=0; Instance.new("UICorner",colorBox).CornerRadius=UDim.new(0,6)
         local nameLbl=Instance.new("TextLabel",row); nameLbl.Size=UDim2.new(1,-58,0,22); nameLbl.Position=UDim2.new(0,50,0,6); nameLbl.BackgroundTransparency=1; nameLbl.Text=preset.name; nameLbl.TextColor3=Color3.fromRGB(210,210,210); nameLbl.Font=Enum.Font.GothamBold; nameLbl.TextSize=14; nameLbl.TextXAlignment=Enum.TextXAlignment.Left
         local idLbl=Instance.new("TextLabel",row); idLbl.Size=UDim2.new(1,-58,0,14); idLbl.Position=UDim2.new(0,50,1,-18); idLbl.BackgroundTransparency=1; idLbl.Text="ID: "..preset.id; idLbl.TextColor3=Color3.fromRGB(100,100,100); idLbl.Font=Enum.Font.Gotham; idLbl.TextSize=10; idLbl.TextXAlignment=Enum.TextXAlignment.Left
-        row.MouseButton1Click:Connect(function() ApplySkyboxById(preset.id); Notify("Skybox: "..preset.name) end)
+        row.MouseButton1Click:Connect(function() ApplySkyboxById(preset.id); Notify(T("skybox_set")..preset.name) end)
     end
     MakeDraggable(frame,frame)
 end
@@ -1186,7 +1383,7 @@ local function OpenColorPicker(title, currentColor, onApply)
     local xBtn=Instance.new("TextButton",frame); xBtn.Size=UDim2.new(0,28,0,28); xBtn.Position=UDim2.new(1,-34,0,4); xBtn.BackgroundColor3=BLUE_DARK; xBtn.Text="X"; xBtn.TextColor3=Color3.new(1,1,1); xBtn.Font=Enum.Font.GothamBold; xBtn.TextSize=13; Instance.new("UICorner",xBtn).CornerRadius=UDim.new(0,6)
     xBtn.MouseButton1Click:Connect(function() sg:Destroy() end)
     local preview=Instance.new("Frame",frame); preview.Size=UDim2.new(1,-20,0,26); preview.Position=UDim2.new(0,10,0,42); preview.BackgroundColor3=currentColor; preview.BorderSizePixel=0; Instance.new("UICorner",preview).CornerRadius=UDim.new(0,8)
-    local previewLbl=Instance.new("TextLabel",preview); previewLbl.Size=UDim2.new(1,0,1,0); previewLbl.BackgroundTransparency=1; previewLbl.Text="Preview"; previewLbl.TextColor3=Color3.fromRGB(200,200,200); previewLbl.Font=Enum.Font.GothamBold; previewLbl.TextSize=11
+    local previewLbl=Instance.new("TextLabel",preview); previewLbl.Size=UDim2.new(1,0,1,0); previewLbl.BackgroundTransparency=1; previewLbl.Text=T("preview"); previewLbl.TextColor3=Color3.fromRGB(200,200,200); previewLbl.Font=Enum.Font.GothamBold; previewLbl.TextSize=11
     local selected=currentColor
     local grid=Instance.new("Frame",frame); grid.Size=UDim2.new(1,-20,0,160); grid.Position=UDim2.new(0,10,0,76); grid.BackgroundTransparency=1
     local uiGrid=Instance.new("UIGridLayout",grid); uiGrid.CellSize=UDim2.new(0,38,0,38); uiGrid.CellPadding=UDim2.new(0,6,0,6); uiGrid.HorizontalAlignment=Enum.HorizontalAlignment.Left
@@ -1194,10 +1391,10 @@ local function OpenColorPicker(title, currentColor, onApply)
         local btn=Instance.new("TextButton",grid); btn.Size=UDim2.new(0,38,0,38); btn.BackgroundColor3=preset.c; btn.Text=""; btn.AutoButtonColor=false; Instance.new("UICorner",btn).CornerRadius=UDim.new(0,8)
         btn.MouseButton1Click:Connect(function() selected=preset.c; preview.BackgroundColor3=selected end)
     end
-    local rgbBox=Instance.new("TextBox",frame); rgbBox.Size=UDim2.new(1,-20,0,26); rgbBox.Position=UDim2.new(0,10,0,244); rgbBox.BackgroundColor3=Color3.fromRGB(20,20,20); rgbBox.Text=""; rgbBox.PlaceholderText="R,G,B  ornek: 52,152,219"; rgbBox.TextColor3=Color3.fromRGB(220,220,220); rgbBox.PlaceholderColor3=Color3.fromRGB(90,90,90); rgbBox.Font=Enum.Font.Gotham; rgbBox.TextSize=11; rgbBox.ClearTextOnFocus=false; Instance.new("UICorner",rgbBox).CornerRadius=UDim.new(0,6); Instance.new("UIStroke",rgbBox).Color=Color3.fromRGB(80,80,80)
+    local rgbBox=Instance.new("TextBox",frame); rgbBox.Size=UDim2.new(1,-20,0,26); rgbBox.Position=UDim2.new(0,10,0,244); rgbBox.BackgroundColor3=Color3.fromRGB(20,20,20); rgbBox.Text=""; rgbBox.PlaceholderText=T("rgb_ph"); rgbBox.TextColor3=Color3.fromRGB(220,220,220); rgbBox.PlaceholderColor3=Color3.fromRGB(90,90,90); rgbBox.Font=Enum.Font.Gotham; rgbBox.TextSize=11; rgbBox.ClearTextOnFocus=false; Instance.new("UICorner",rgbBox).CornerRadius=UDim.new(0,6); Instance.new("UIStroke",rgbBox).Color=Color3.fromRGB(80,80,80)
     rgbBox.FocusLost:Connect(function(enter) if enter then local r,g,b=rgbBox.Text:match("(%d+)[,%s]+(%d+)[,%s]+(%d+)"); if r and g and b then selected=Color3.fromRGB(tonumber(r),tonumber(g),tonumber(b)); preview.BackgroundColor3=selected end; rgbBox.Text="" end end)
-    local applyBtn=Instance.new("TextButton",frame); applyBtn.Size=UDim2.new(1,-20,0,28); applyBtn.Position=UDim2.new(0,10,0,278); applyBtn.BackgroundColor3=Color3.fromRGB(20,150,20); applyBtn.Text="Apply Color"; applyBtn.TextColor3=Color3.new(1,1,1); applyBtn.Font=Enum.Font.GothamBold; applyBtn.TextSize=13; Instance.new("UICorner",applyBtn).CornerRadius=UDim.new(0,6)
-    applyBtn.MouseButton1Click:Connect(function() onApply(selected); Notify(title.." applied!"); sg:Destroy() end)
+    local applyBtn=Instance.new("TextButton",frame); applyBtn.Size=UDim2.new(1,-20,0,28); applyBtn.Position=UDim2.new(0,10,0,278); applyBtn.BackgroundColor3=Color3.fromRGB(20,150,20); applyBtn.Text=T("apply_color"); applyBtn.TextColor3=Color3.new(1,1,1); applyBtn.Font=Enum.Font.GothamBold; applyBtn.TextSize=13; Instance.new("UICorner",applyBtn).CornerRadius=UDim.new(0,6)
+    applyBtn.MouseButton1Click:Connect(function() onApply(selected); Notify(title..T("applied_suffix")); sg:Destroy() end)
     MakeDraggable(frame,frame)
 end
 
@@ -1208,15 +1405,15 @@ local function OpenCursorPicker()
     local fs=Instance.new("UIStroke",frame); fs.Color=BLUE; fs.Thickness=2
     local fsg=Instance.new("UIGradient",fs); fsg.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,BLUE),ColorSequenceKeypoint.new(0.5,BLUE_DARK),ColorSequenceKeypoint.new(1,BLUE)})
     task.spawn(function() local r=0; while frame and frame.Parent do r=(r+2)%360; fsg.Rotation=r; RunService.RenderStepped:Wait() end end)
-    local hdr=Instance.new("TextLabel",frame); hdr.Size=UDim2.new(1,-44,0,38); hdr.Position=UDim2.new(0,12,0,0); hdr.BackgroundTransparency=1; hdr.Text="CogHub  |  Cursor Picker"; hdr.TextColor3=Color3.fromRGB(255,255,255); hdr.Font=Enum.Font.GothamBold; hdr.TextSize=14; hdr.TextXAlignment=Enum.TextXAlignment.Left
+    local hdr=Instance.new("TextLabel",frame); hdr.Size=UDim2.new(1,-44,0,38); hdr.Position=UDim2.new(0,12,0,0); hdr.BackgroundTransparency=1; hdr.Text="CogHub  |  "..T("cursor_picker"); hdr.TextColor3=Color3.fromRGB(255,255,255); hdr.Font=Enum.Font.GothamBold; hdr.TextSize=14; hdr.TextXAlignment=Enum.TextXAlignment.Left
     local xBtn=Instance.new("TextButton",frame); xBtn.Size=UDim2.new(0,28,0,28); xBtn.Position=UDim2.new(1,-34,0,5); xBtn.BackgroundColor3=BLUE_DARK; xBtn.Text="X"; xBtn.TextColor3=Color3.new(1,1,1); xBtn.Font=Enum.Font.GothamBold; xBtn.TextSize=13; Instance.new("UICorner",xBtn).CornerRadius=UDim.new(0,6)
     xBtn.MouseButton1Click:Connect(function() sg:Destroy() end)
     -- Custom ID box
-    local idBox=Instance.new("TextBox",frame); idBox.Size=UDim2.new(1,-20,0,30); idBox.Position=UDim2.new(0,10,0,44); idBox.BackgroundColor3=Color3.fromRGB(22,22,22); idBox.Text=""; idBox.PlaceholderText="Custom Cursor ID, Enter..."; idBox.TextColor3=Color3.new(1,1,1); idBox.PlaceholderColor3=Color3.fromRGB(120,120,120); idBox.Font=Enum.Font.Gotham; idBox.TextSize=13; idBox.ClearTextOnFocus=false; Instance.new("UICorner",idBox).CornerRadius=UDim.new(0,6); Instance.new("UIStroke",idBox).Color=Color3.fromRGB(80,80,80)
-    idBox.FocusLost:Connect(function(enter) if enter and idBox.Text~="" then activeCursorId=idBox.Text; if crosshairActive and crosshairImg then crosshairImg.Image="rbxassetid://"..idBox.Text end; Notify("Custom cursor set!"); idBox.Text="" end end)
+    local idBox=Instance.new("TextBox",frame); idBox.Size=UDim2.new(1,-20,0,30); idBox.Position=UDim2.new(0,10,0,44); idBox.BackgroundColor3=Color3.fromRGB(22,22,22); idBox.Text=""; idBox.PlaceholderText=T("cursor_id_ph"); idBox.TextColor3=Color3.new(1,1,1); idBox.PlaceholderColor3=Color3.fromRGB(120,120,120); idBox.Font=Enum.Font.Gotham; idBox.TextSize=13; idBox.ClearTextOnFocus=false; Instance.new("UICorner",idBox).CornerRadius=UDim.new(0,6); Instance.new("UIStroke",idBox).Color=Color3.fromRGB(80,80,80)
+    idBox.FocusLost:Connect(function(enter) if enter and idBox.Text~="" then activeCursorId=idBox.Text; if crosshairActive and crosshairImg then crosshairImg.Image="rbxassetid://"..idBox.Text end; Notify(T("custom_cursor")); idBox.Text="" end end)
     -- Spin toggle
     local spinRow=Instance.new("Frame",frame); spinRow.Size=UDim2.new(1,-20,0,26); spinRow.Position=UDim2.new(0,10,0,80); spinRow.BackgroundTransparency=1
-    local spinLbl=Instance.new("TextLabel",spinRow); spinLbl.Size=UDim2.new(1,-64,1,0); spinLbl.BackgroundTransparency=1; spinLbl.Text="Spin Crosshair"; spinLbl.TextColor3=Color3.fromRGB(200,200,200); spinLbl.Font=Enum.Font.GothamBold; spinLbl.TextSize=12; spinLbl.TextXAlignment=Enum.TextXAlignment.Left
+    local spinLbl=Instance.new("TextLabel",spinRow); spinLbl.Size=UDim2.new(1,-64,1,0); spinLbl.BackgroundTransparency=1; spinLbl.Text=T("spin_crosshair"); spinLbl.TextColor3=Color3.fromRGB(200,200,200); spinLbl.Font=Enum.Font.GothamBold; spinLbl.TextSize=12; spinLbl.TextXAlignment=Enum.TextXAlignment.Left
     local spinPill=Instance.new("Frame",spinRow); spinPill.Size=UDim2.new(0,40,0,20); spinPill.Position=UDim2.new(1,-42,0.5,-10); spinPill.BackgroundColor3=crosshairSpin and BLUE or Color3.fromRGB(55,55,70); Instance.new("UICorner",spinPill).CornerRadius=UDim.new(1,0)
     local spinKnob=Instance.new("Frame",spinPill); spinKnob.Size=UDim2.new(0,14,0,14); spinKnob.Position=crosshairSpin and UDim2.new(1,-17,0.5,-7) or UDim2.new(0,3,0.5,-7); spinKnob.BackgroundColor3=Color3.fromRGB(255,255,255); spinKnob.BorderSizePixel=0; Instance.new("UICorner",spinKnob).CornerRadius=UDim.new(1,0)
     local spinClick=Instance.new("TextButton",spinRow); spinClick.Size=UDim2.new(1,0,1,0); spinClick.BackgroundTransparency=1; spinClick.Text=""
@@ -1227,7 +1424,7 @@ local function OpenCursorPicker()
     end)
     -- Gradient toggle
     local gradRow=Instance.new("Frame",frame); gradRow.Size=UDim2.new(1,-20,0,26); gradRow.Position=UDim2.new(0,10,0,112); gradRow.BackgroundTransparency=1
-    local gradLbl=Instance.new("TextLabel",gradRow); gradLbl.Size=UDim2.new(1,-64,1,0); gradLbl.BackgroundTransparency=1; gradLbl.Text="Gradient Color Mode"; gradLbl.TextColor3=Color3.fromRGB(200,200,200); gradLbl.Font=Enum.Font.GothamBold; gradLbl.TextSize=12; gradLbl.TextXAlignment=Enum.TextXAlignment.Left
+    local gradLbl=Instance.new("TextLabel",gradRow); gradLbl.Size=UDim2.new(1,-64,1,0); gradLbl.BackgroundTransparency=1; gradLbl.Text=T("gradient_mode"); gradLbl.TextColor3=Color3.fromRGB(200,200,200); gradLbl.Font=Enum.Font.GothamBold; gradLbl.TextSize=12; gradLbl.TextXAlignment=Enum.TextXAlignment.Left
     local gradPill=Instance.new("Frame",gradRow); gradPill.Size=UDim2.new(0,40,0,20); gradPill.Position=UDim2.new(1,-42,0.5,-10); gradPill.BackgroundColor3=crosshairGradEnabled and BLUE or Color3.fromRGB(55,55,70); Instance.new("UICorner",gradPill).CornerRadius=UDim.new(1,0)
     local gradKnob=Instance.new("Frame",gradPill); gradKnob.Size=UDim2.new(0,14,0,14); gradKnob.Position=crosshairGradEnabled and UDim2.new(1,-17,0.5,-7) or UDim2.new(0,3,0.5,-7); gradKnob.BackgroundColor3=Color3.fromRGB(255,255,255); gradKnob.BorderSizePixel=0; Instance.new("UICorner",gradKnob).CornerRadius=UDim.new(1,0)
     local gradClick=Instance.new("TextButton",gradRow); gradClick.Size=UDim2.new(1,0,1,0); gradClick.BackgroundTransparency=1; gradClick.Text=""
@@ -1237,9 +1434,9 @@ local function OpenCursorPicker()
         TweenService:Create(gradKnob,TweenInfo.new(0.2),{Position=crosshairGradEnabled and UDim2.new(1,-17,0.5,-7) or UDim2.new(0,3,0.5,-7)}):Play()
     end)
     -- Color 1 & 2
-    local col1Btn=Instance.new("TextButton",frame); col1Btn.Size=UDim2.new(0.47,-5,0,26); col1Btn.Position=UDim2.new(0,10,0,144); col1Btn.BackgroundColor3=crosshairColor1; col1Btn.Text="Color 1"; col1Btn.TextColor3=Color3.new(1,1,1); col1Btn.Font=Enum.Font.GothamBold; col1Btn.TextSize=11; Instance.new("UICorner",col1Btn).CornerRadius=UDim.new(0,6)
+    local col1Btn=Instance.new("TextButton",frame); col1Btn.Size=UDim2.new(0.47,-5,0,26); col1Btn.Position=UDim2.new(0,10,0,144); col1Btn.BackgroundColor3=crosshairColor1; col1Btn.Text=T("color1"); col1Btn.TextColor3=Color3.new(1,1,1); col1Btn.Font=Enum.Font.GothamBold; col1Btn.TextSize=11; Instance.new("UICorner",col1Btn).CornerRadius=UDim.new(0,6)
     col1Btn.MouseButton1Click:Connect(function() OpenColorPicker("Crosshair Color 1",crosshairColor1,function(c) crosshairColor1=c; col1Btn.BackgroundColor3=c; ApplyCrosshairColor() end) end)
-    local col2Btn=Instance.new("TextButton",frame); col2Btn.Size=UDim2.new(0.47,-5,0,26); col2Btn.Position=UDim2.new(0.53,-5,0,144); col2Btn.BackgroundColor3=crosshairColor2; col2Btn.Text="Color 2 (Gradient)"; col2Btn.TextColor3=Color3.new(1,1,1); col2Btn.Font=Enum.Font.GothamBold; col2Btn.TextSize=11; Instance.new("UICorner",col2Btn).CornerRadius=UDim.new(0,6)
+    local col2Btn=Instance.new("TextButton",frame); col2Btn.Size=UDim2.new(0.47,-5,0,26); col2Btn.Position=UDim2.new(0.53,-5,0,144); col2Btn.BackgroundColor3=crosshairColor2; col2Btn.Text=T("color2"); col2Btn.TextColor3=Color3.new(1,1,1); col2Btn.Font=Enum.Font.GothamBold; col2Btn.TextSize=11; Instance.new("UICorner",col2Btn).CornerRadius=UDim.new(0,6)
     col2Btn.MouseButton1Click:Connect(function() OpenColorPicker("Crosshair Color 2",crosshairColor2,function(c) crosshairColor2=c; col2Btn.BackgroundColor3=c; ApplyCrosshairColor() end) end)
     -- Preset list
     local scroll=Instance.new("ScrollingFrame",frame); scroll.Size=UDim2.new(1,-14,1,-180); scroll.Position=UDim2.new(0,7,0,178); scroll.BackgroundTransparency=1; scroll.BorderSizePixel=0; scroll.ScrollBarThickness=4; scroll.CanvasSize=UDim2.new(0,0,0,#CURSORS*64)
@@ -1251,7 +1448,7 @@ local function OpenCursorPicker()
         local prev=Instance.new("ImageLabel",row); prev.Size=UDim2.new(0,40,0,40); prev.Position=UDim2.new(0,8,0.5,-20); prev.BackgroundTransparency=1; prev.Image="rbxassetid://"..cur.id; prev.ImageColor3=crosshairColor1
         local nameLbl=Instance.new("TextLabel",row); nameLbl.Size=UDim2.new(1,-64,0,20); nameLbl.Position=UDim2.new(0,56,0,8); nameLbl.BackgroundTransparency=1; nameLbl.Text=cur.name; nameLbl.TextColor3=Color3.fromRGB(210,210,210); nameLbl.Font=Enum.Font.GothamBold; nameLbl.TextSize=13; nameLbl.TextXAlignment=Enum.TextXAlignment.Left
         local idLbl=Instance.new("TextLabel",row); idLbl.Size=UDim2.new(1,-64,0,14); idLbl.Position=UDim2.new(0,56,1,-18); idLbl.BackgroundTransparency=1; idLbl.Text="ID: "..cur.id; idLbl.TextColor3=Color3.fromRGB(100,100,100); idLbl.Font=Enum.Font.Gotham; idLbl.TextSize=10; idLbl.TextXAlignment=Enum.TextXAlignment.Left
-        row.MouseButton1Click:Connect(function() activeCursorId=cur.id; if crosshairActive and crosshairImg then crosshairImg.Image="rbxassetid://"..cur.id end; Notify("Cursor: "..cur.name) end)
+        row.MouseButton1Click:Connect(function() activeCursorId=cur.id; if crosshairActive and crosshairImg then crosshairImg.Image="rbxassetid://"..cur.id end; Notify(T("cursor_set")..cur.name) end)
     end
     MakeDraggable(frame,frame)
 end
@@ -1572,127 +1769,120 @@ end)
 --  WINDUI MENU
 -- ================================================================
 WindUI:Popup({
-    Title="CogHub MM2", Icon="sparkles", Content="v1.0  |  Beta Edition",
-    Buttons={{Title="OK", Icon="check", Variant="Primary", Callback=function() end}}
+    Title = T("popup_title"), Icon = "sparkles", Content = T("popup_content"),
+    Buttons = {{ Title = T("ok"), Icon = "check", Variant = "Primary", Callback = function() end }}
 })
 
-local Window = WindUI:CreateWindow({
-    Title="CogHub", Icon="sparkles", Author="MM2 v1.0", Folder="CogHub",
-    Size=UDim2.fromOffset(560, 560), Theme="Ocean", Acrylic=false, HideSearchBar=true,
-    OpenButton={
-        Title="CogHub", CornerRadius=UDim.new(1,0), StrokeThickness=2,
-        Enabled=true, OnlyMobile=false,
-        Color=ColorSequence.new(Color3.fromHex("#3498db"), Color3.fromHex("#1f618d")),
+Window = WindUI:CreateWindow({
+    Title = "CogHub", Icon = "sparkles", Author = T("window_author"), Folder = "CogHub",
+    Size = UDim2.fromOffset(560, 580), Theme = "Ocean", Acrylic = false, HideSearchBar = true,
+    OpenButton = {
+        Title = "CogHub", CornerRadius = UDim.new(1, 0), StrokeThickness = 2,
+        Enabled = true, OnlyMobile = false,
+        Color = ColorSequence.new(Color3.fromHex("#3498db"), Color3.fromHex("#1f618d")),
     },
 })
-local NavSec = Window:Section({Title="CogHub v1.0  |  Beta Edition", Opened=true})
-local Tab    = NavSec:Tab({Title="Main", Icon="zap"})
+NavSec = Window:Section({ Title = T("section_title"), Opened = true })
+Tab = NavSec:Tab({ Title = T("tab_main"), Icon = "zap" })
 
--- ── LOAD BUTTONS ───────────────────────────────────────────────
-Tab:Paragraph({Title="Load Buttons", Content="Load any floating button."})
-Tab:Toggle({Title="Gold Jump",         Default=false, Callback=function(v) LoadGoldBomb(v)      end})
-Tab:Toggle({Title="Bomb Jump",         Default=false, Callback=function(v) LoadNormalBomb(v)    end})
-Tab:Toggle({Title="Shoot / Throw",     Default=false, Callback=function(v) LoadShoot(v)         end})
-Tab:Toggle({Title="ESP",               Default=false, Callback=function(v) LoadESP(v)           end})
-Tab:Toggle({Title="Flick",             Default=false, Callback=function(v) LoadFlick(v)         end})
-Tab:Toggle({Title="Speed Glitch",      Default=false, Callback=function(v) LoadSpeedGlitch(v)   end})
-Tab:Button({Title="Speed Amount",      Description="16-500",  Callback=function()
-    OpenSliderPopup("Speed Amount", 16, 500, SPEED_AMOUNT, 8,
-        function(val) SPEED_AMOUNT=val end,
-        function() SPEED_AMOUNT=200 end)
-end})
-Tab:Toggle({Title="Stretch",           Default=false, Callback=function(v) LoadStretch(v)       end})
-Tab:Button({Title="Stretch Amount",    Description="1-200", Callback=function()
-    OpenSliderPopup("Stretch Amount", 1, 200, STRETCH_AMOUNT, 5,
-        function(val) STRETCH_AMOUNT=val end,
-        function() STRETCH_AMOUNT=50 end)
-end})
-Tab:Toggle({Title="Grab Gun",          Default=false, Callback=function(v) LoadGrabGun(v)       end})
-Tab:Toggle({Title="Wall Hop",          Default=false, Callback=function(v) LoadWallHop(v)       end})
-Tab:Toggle({Title="Fling Murderer",    Default=false, Callback=function(v) LoadFlingMurderer(v) end})
-Tab:Toggle({Title="Fling Sheriff",     Default=false, Callback=function(v) LoadFlingSheriff(v)  end})
-Tab:Toggle({Title="Hold Everyone",     Default=false, Callback=function(v) LoadHoldEveryone(v)  end})
-Tab:Toggle({Title="Invisible",         Default=false, Callback=function(v) LoadInvisible(v)     end})
-Tab:Toggle({Title="Super Jump",        Default=false, Callback=function(v) LoadSuperJump(v)     end})
-Tab:Button({Title="Super Jump Power",  Description="50-500", Callback=function()
-    OpenSliderPopup("Super Jump Power", 50, 500, SUPER_JUMP_POWER, 10,
-        function(val) SUPER_JUMP_POWER=val end,
-        function() SUPER_JUMP_POWER=150 end)
-end})
-Tab:Toggle({Title="Auto Farm",         Default=false, Callback=function(v) LoadAutoFarm(v)      end})
-Tab:Toggle({Title="Anti-Fling",        Default=false, Callback=function(v) LoadAntiFling(v)     end})
-Tab:Toggle({Title="Low Graphics",      Default=false, Callback=function(v) LoadLowGraphics(v)   end})
+Track(Tab:Paragraph({ Title = T("load_buttons_title"), Content = T("load_buttons_desc") }), "load_buttons_title", "load_buttons_desc")
+Track(Tab:Toggle({ Title = T("gui_gold_jump"), Default = false, Callback = function(v) LoadGoldBomb(v) end }), "gui_gold_jump")
+Track(Tab:Toggle({ Title = T("gui_bomb_jump"), Default = false, Callback = function(v) LoadNormalBomb(v) end }), "gui_bomb_jump")
+Track(Tab:Toggle({ Title = T("gui_shoot_throw"), Default = false, Callback = function(v) LoadShoot(v) end }), "gui_shoot_throw")
+Track(Tab:Toggle({ Title = T("gui_esp"), Default = false, Callback = function(v) LoadESP(v) end }), "gui_esp")
+Track(Tab:Toggle({ Title = T("gui_flick"), Default = false, Callback = function(v) LoadFlick(v) end }), "gui_flick")
+Track(Tab:Toggle({ Title = T("gui_speed_glitch"), Default = false, Callback = function(v) LoadSpeedGlitch(v) end }), "gui_speed_glitch")
+Track(Tab:Button({ Title = T("gui_speed_amount"), Description = T("gui_speed_amount_desc"), Callback = function()
+    OpenSliderPopup(T("gui_speed_amount"), 16, 500, SPEED_AMOUNT, 8,
+        function(val) SPEED_AMOUNT = val end,
+        function() SPEED_AMOUNT = 200 end)
+end }), "gui_speed_amount", "gui_speed_amount_desc")
+Track(Tab:Toggle({ Title = T("gui_stretch"), Default = false, Callback = function(v) LoadStretch(v) end }), "gui_stretch")
+Track(Tab:Button({ Title = T("gui_stretch_amount"), Description = T("gui_stretch_amount_desc"), Callback = function()
+    OpenSliderPopup(T("gui_stretch_amount"), 1, 200, STRETCH_AMOUNT, 5,
+        function(val) STRETCH_AMOUNT = val end,
+        function() STRETCH_AMOUNT = 50 end)
+end }), "gui_stretch_amount", "gui_stretch_amount_desc")
+Track(Tab:Toggle({ Title = T("gui_grab_gun"), Default = false, Callback = function(v) LoadGrabGun(v) end }), "gui_grab_gun")
+Track(Tab:Toggle({ Title = T("gui_wall_hop"), Default = false, Callback = function(v) LoadWallHop(v) end }), "gui_wall_hop")
+Track(Tab:Toggle({ Title = T("gui_fling_murderer"), Default = false, Callback = function(v) LoadFlingMurderer(v) end }), "gui_fling_murderer")
+Track(Tab:Toggle({ Title = T("gui_fling_sheriff"), Default = false, Callback = function(v) LoadFlingSheriff(v) end }), "gui_fling_sheriff")
+Track(Tab:Toggle({ Title = T("gui_hold_everyone"), Default = false, Callback = function(v) LoadHoldEveryone(v) end }), "gui_hold_everyone")
+Track(Tab:Toggle({ Title = T("gui_invisible"), Default = false, Callback = function(v) LoadInvisible(v) end }), "gui_invisible")
+Track(Tab:Toggle({ Title = T("gui_super_jump"), Default = false, Callback = function(v) LoadSuperJump(v) end }), "gui_super_jump")
+Track(Tab:Button({ Title = T("gui_super_jump_power"), Description = T("gui_super_jump_power_desc"), Callback = function()
+    OpenSliderPopup(T("gui_super_jump_power"), 50, 500, SUPER_JUMP_POWER, 10,
+        function(val) SUPER_JUMP_POWER = val end,
+        function() SUPER_JUMP_POWER = 150 end)
+end }), "gui_super_jump_power", "gui_super_jump_power_desc")
+Track(Tab:Toggle({ Title = T("gui_auto_farm"), Default = false, Callback = function(v) LoadAutoFarm(v) end }), "gui_auto_farm")
+Track(Tab:Toggle({ Title = T("gui_anti_fling"), Default = false, Callback = function(v) LoadAntiFling(v) end }), "gui_anti_fling")
+Track(Tab:Toggle({ Title = T("gui_low_graphics"), Default = false, Callback = function(v) LoadLowGraphics(v) end }), "gui_low_graphics")
 Tab:Divider()
 
--- ── ESP SETTINGS ───────────────────────────────────────────────
-Tab:Paragraph({Title="ESP Settings", Content="Select roles to show."})
-Tab:Toggle({Title="Show Murderer",   Default=true,  Callback=function(v) espSettings.Murderer=v end})
-Tab:Toggle({Title="Show Sheriff",    Default=true,  Callback=function(v) espSettings.Sheriff=v  end})
-Tab:Toggle({Title="Show Hero",       Default=true,  Callback=function(v) espSettings.Hero=v     end})
-Tab:Toggle({Title="Show Innocents",  Default=true,  Callback=function(v) espSettings.Innocent=v end})
-Tab:Toggle({Title="Show Self",       Default=true,  Callback=function(v) espSettings.Self=v     end})
-Tab:Toggle({Title="Dropped Gun ESP", Default=true,  Callback=function(v) droppedGunEspEnabled=v; if not v then ClearGunESP(); ClearGunMarker() end end})
+Track(Tab:Paragraph({ Title = T("esp_settings_title"), Content = T("esp_settings_desc") }), "esp_settings_title", "esp_settings_desc")
+Track(Tab:Toggle({ Title = T("show_murderer"), Default = true, Callback = function(v) espSettings.Murderer = v end }), "show_murderer")
+Track(Tab:Toggle({ Title = T("show_sheriff"), Default = true, Callback = function(v) espSettings.Sheriff = v end }), "show_sheriff")
+Track(Tab:Toggle({ Title = T("show_hero"), Default = true, Callback = function(v) espSettings.Hero = v end }), "show_hero")
+Track(Tab:Toggle({ Title = T("show_innocents"), Default = true, Callback = function(v) espSettings.Innocent = v end }), "show_innocents")
+Track(Tab:Toggle({ Title = T("show_self"), Default = true, Callback = function(v) espSettings.Self = v end }), "show_self")
+Track(Tab:Toggle({ Title = T("dropped_gun_esp"), Default = true, Callback = function(v) droppedGunEspEnabled = v; if not v then ClearGunESP(); ClearGunMarker() end end }), "dropped_gun_esp")
 Tab:Divider()
 
--- ── CROSSHAIR ──────────────────────────────────────────────────
-Tab:Paragraph({Title="Crosshair", Content="Custom crosshair settings."})
-Tab:Toggle({Title="Custom Crosshair", Default=false, Callback=function(v)
-    crosshairActive=v
+Track(Tab:Paragraph({ Title = T("crosshair_title"), Content = T("crosshair_desc") }), "crosshair_title", "crosshair_desc")
+Track(Tab:Toggle({ Title = T("custom_crosshair"), Default = false, Callback = function(v)
+    crosshairActive = v
     if v then
-        SetupCrosshairDisplay(); Notify("Crosshair ON")
+        SetupCrosshairDisplay(); Notify(T("crosshair_on"))
     else
-        local old=game.CoreGui:FindFirstChild("CogCrosshairDisplay"); if old then old:Destroy(); crosshairImg=nil end
-        if spinConn then spinConn:Disconnect(); spinConn=nil end
-        if crosshairColorConn then crosshairColorConn:Disconnect(); crosshairColorConn=nil end
-        UserInputService.MouseIconEnabled=true
+        local old = game.CoreGui:FindFirstChild("CogCrosshairDisplay"); if old then old:Destroy(); crosshairImg = nil end
+        if spinConn then spinConn:Disconnect(); spinConn = nil end
+        if crosshairColorConn then crosshairColorConn:Disconnect(); crosshairColorConn = nil end
+        UserInputService.MouseIconEnabled = true
         HideGameCrosshair(false)
     end
-end})
-Tab:Button({Title="Crosshair Picker + Colors", Description="Preset cursor + Spin + Color + Gradient", Callback=OpenCursorPicker})
-Tab:Button({Title="Crosshair Size",            Description="16px - 96px",  Callback=function()
-    OpenSliderPopup("Crosshair Size", 16, 96, crosshairSize, 4,
-        function(val) crosshairSize=val; if crosshairImg then crosshairImg.Size=UDim2.new(0,val,0,val) end end,
-        function() crosshairSize=42; if crosshairImg then crosshairImg.Size=UDim2.new(0,42,0,42) end end)
-end})
+end }), "custom_crosshair")
+Track(Tab:Button({ Title = T("crosshair_picker"), Description = T("crosshair_picker_desc"), Callback = OpenCursorPicker }), "crosshair_picker", "crosshair_picker_desc")
+Track(Tab:Button({ Title = T("crosshair_size"), Description = T("crosshair_size_desc"), Callback = function()
+    OpenSliderPopup(T("crosshair_size"), 16, 96, crosshairSize, 4,
+        function(val) crosshairSize = val; if crosshairImg then crosshairImg.Size = UDim2.new(0, val, 0, val) end end,
+        function() crosshairSize = 42; if crosshairImg then crosshairImg.Size = UDim2.new(0, 42, 0, 42) end end)
+end }), "crosshair_size", "crosshair_size_desc")
 Tab:Divider()
 
--- ── SKYBOX ─────────────────────────────────────────────────────
-Tab:Paragraph({Title="Skybox", Content="7 presets + custom ID."})
-Tab:Button({Title="Skybox Picker", Callback=OpenSkyboxPicker})
+Track(Tab:Paragraph({ Title = T("skybox_title"), Content = T("skybox_desc") }), "skybox_title", "skybox_desc")
+Track(Tab:Button({ Title = T("skybox_picker_btn"), Callback = OpenSkyboxPicker }), "skybox_picker_btn")
 Tab:Divider()
 
--- ── ASMR KEYBOARD ──────────────────────────────────────────────
-Tab:Paragraph({Title="ASMR Keyboard Walk", Content="Keys appear under your feet."})
-Tab:Toggle({Title="ASMR Keyboard Walk Mode", Default=false, Callback=function(v)
-    asmrEnabled=v
-    if v then StartAsmrKeyboard(); Notify("ASMR Keyboard ON") else StopAsmrKeyboard() end
-end})
+Track(Tab:Paragraph({ Title = T("asmr_title"), Content = T("asmr_desc") }), "asmr_title", "asmr_desc")
+Track(Tab:Toggle({ Title = T("asmr_toggle"), Default = false, Callback = function(v)
+    asmrEnabled = v
+    if v then StartAsmrKeyboard(); Notify(T("asmr_on")) else StopAsmrKeyboard() end
+end }), "asmr_toggle")
 Tab:Divider()
 
--- ── SETTINGS & SUPPORT ─────────────────────────────────────────
-Tab:Paragraph({Title="Settings & Support", Content="Change language or join the community."})
-Tab:Dropdown({
-    Title = "Language / Dil / Sprache / Langue / Idioma",
-    Values = {"English", "Türkçe", "Deutch", "Français", "Español"},
-    Value = "English",
-    Callback = function(val)
-        currentLang = val
-        Notify(T("lang_changed"))
-    end
-})
-Tab:Button({
-    Title = "Support Server",
-    Description = "Join our Discord for updates and support!",
+Track(Tab:Paragraph({ Title = T("settings_support_title"), Content = T("settings_support_desc") }), "settings_support_title", "settings_support_desc")
+
+guiRefs.discordDropdown = Tab:Dropdown({
+    Title = T("discord_menu"),
     Icon = "messages-square",
+    Values = { T("support_server") },
+    Value = T("support_server"),
     Callback = function()
-        if setclipboard then
-            setclipboard("https://discord.gg/RU5xWM483S")
-            Notify(T("discord"))
-        else
-            Notify("Your executor doesn't support setclipboard!")
-        end
-    end
+        OpenDiscord()
+    end,
 })
+
+guiRefs.langDropdown = Tab:Dropdown({
+    Title = T("language_label"),
+    Values = LANG_OPTIONS,
+    Value = currentLang,
+    Callback = function(val)
+        ChangeLanguage(val)
+    end,
+})
+
+Track(Tab:Paragraph({ Title = T("creator_line"), Content = T("creator_desc") }), "creator_line", "creator_desc")
 
 -- ================================================================
 --  CHARACTER ADDED - CLEANUP
@@ -1713,5 +1903,5 @@ player.CharacterAdded:Connect(function(char)
     if autoFarmEnabled then task.wait(1); EnableNoclip() end
 end)
 
-Notify("CogHub v1.0 ready!")
-print("[CogHub] v1.0 Beta Edition loaded.")
+Notify(T("ready_msg"))
+print("[CogHub] v1.2 loaded by Beli!")
